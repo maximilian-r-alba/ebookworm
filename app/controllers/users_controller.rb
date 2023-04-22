@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show update destroy ]
-
+  # before_action :set_user, only: %i[ update destroy ]
+  skip_before_action :authorize, only: [:index , :create]
   # GET /users
   def index
     @users = User.all
@@ -10,42 +10,39 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
+    @user = User.find(params[:id])
     render json: @user
   end
 
   # POST /users
   def create
-    @user = User.new(user_params)
+      @user = User.create!(user_params)
 
-    if @user.save
-      render json: @user, status: :created, location: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
+      render json: @user, status: :created
+  
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    # make an error alerting can't update someone else's profile
+    @user = User.find_by(id: params[:id])
+    byebug
+    if @user == @current_user && @current_user.update(user_params)
+      render json: @current_user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json:@current_user.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    @current_user.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      @user = User.find(params[:id])
-    end
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:name, :username, :password_digest, :profile_picture, :headline)
+      params.permit(:name, :username, :password, :password_confirmation, :profile_picture, :headline)
     end
 end
