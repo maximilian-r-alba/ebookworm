@@ -4,9 +4,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
-
-    render json: @users, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
+    render json: User.all, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
   end
 
   # GET /users/1
