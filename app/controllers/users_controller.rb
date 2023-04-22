@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
-    render json: @users, include: ['subscriptions', 'subscriptions.messages', 'chatrooms']
+    render json: @users, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
   end
 
   # GET /users/1
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     user = User.find(params[:id])
 
     # might not want/need to see all subscription messages
-    render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms']
+    render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
   end
 
   # POST /users
