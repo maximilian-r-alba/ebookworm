@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :messages, only: [:create, :destroy]
+  resources :messages, only: [:create , :update , :destroy]
   resources :chatrooms
   resources :users
   resources :subscriptions, only: [:create , :destroy]
