@@ -6,4 +6,7 @@ class User < ApplicationRecord
     has_many :owned_chats, class_name: "Chatroom"
     has_many :subscriptions, dependent: :destroy
     has_many :chatrooms, through: :subscriptions
+    has_many :reviews
+    has_many :books, through: :reviews
+
 end
