@@ -4,6 +4,6 @@ class User < ApplicationRecord
     validates :profile_picture, allow_blank: true, format: {with: %r{.(jpg|png)\Z}i}
     has_secure_password
 
-    has_many :subscriptions
+    has_many :subscriptions, dependent: :destroy
     has_many :chatrooms, through: :subscriptions
 end
