@@ -1,45 +1,51 @@
 class UsersController < ApplicationController
-  # before_action :set_user, only: %i[ update destroy ]
+  before_action :check_user, only: %i[ update destroy ]
   skip_before_action :authorize, only: [:index , :create]
+
   # GET /users
   def index
     @users = User.all
 
-    render json: @users
+    render json: @users, include: ['subscriptions', 'subscriptions.messages', 'chatrooms']
   end
 
   # GET /users/1
   def show
-    @user = User.find(params[:id])
-    render json: @user
+    user = User.find(params[:id])
+
+    # might not want/need to see all subscription messages
+    render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms']
   end
 
   # POST /users
   def create
-      @user = User.create!(user_params)
+      user = User.create!(user_params)
 
-      render json: @user, status: :created
-  
+      render json: user, status: :created
   end
 
   # PATCH/PUT /users/1
   def update
-    # make an error alerting can't update someone else's profile
-    @user = User.find_by(id: params[:id])
-    byebug
-    if @user == @current_user && @current_user.update(user_params)
+      @current_user.update!(user_params)
+
       render json: @current_user
-    else
-      render json:@current_user.errors, status: :unprocessable_entity
-    end
   end
 
   # DELETE /users/1
   def destroy
     @current_user.destroy
+    session.delete :user_id
+
+    head :no_content
   end
 
   private
+
+    def check_user
+      @user = User.find(params[:id])
+
+      render json: {errors: ["You cannot edit someone else's profile"]}, status: :unauthorized unless @user == @current_user
+    end
 
     # Only allow a list of trusted parameters through.
     def user_params
