@@ -11,8 +11,14 @@ class Review < ApplicationRecord
     
     book = self.book
     reviews = self.book.reviews
-    rating =( reviews.map{|review| review[:rating]}.sum.to_f / reviews.length )
-
-    book.update(rating: rating)
+    rating = (reviews.map{|review| review[:rating]}.sum.to_f / reviews.length)
+  
+    if rating.nan?
+      book.update(rating: 0.0)
+    else
+      book.update(rating: rating)
+    end
+    
   end
+  
 end
