@@ -15,13 +15,9 @@ class ChatroomsController < ApplicationController
 
   # POST /chatrooms
   def create
-    @chatroom = Chatroom.new(chatroom_params)
+      chatroom = Chatroom.create!(chatroom_params)
 
-    if @chatroom.save
-      render json: @chatroom, status: :created, location: @chatroom
-    else
-      render json: @chatroom.errors, status: :unprocessable_entity
-    end
+      render json: chatroom, status: :created
   end
 
   # PATCH/PUT /chatrooms/1
@@ -42,6 +38,7 @@ class ChatroomsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_chatroom
       @chatroom = Chatroom.find(params[:id])
+      byebug
     end
 
     # Only allow a list of trusted parameters through.
