@@ -2,7 +2,7 @@ class Chatroom < ApplicationRecord
     validates :topic, presence: true
     after_create :subscribe_owner
     belongs_to :owner, class_name: "User", foreign_key: :user_id
-    has_many :subscriptions
+    has_many :subscriptions, dependent: :destroy
     has_many :users, through: :subscriptions
     has_many :messages, through: :subscriptions
 

@@ -1,44 +1,43 @@
 class ChatroomsController < ApplicationController
-  before_action :set_chatroom, only: %i[ show update destroy ]
+  before_action :check_owner, only: %i[ update destroy ]
 
   # GET /chatrooms
   def index
-    @chatrooms = Chatroom.all
-
-    render json: @chatrooms
+    render json: Chatroom.all
   end
 
   # GET /chatrooms/1
   def show
-    render json: @chatroom
+    render json: Chatroom.find(params[:id])
   end
 
   # POST /chatrooms
   def create
-      chatroom = Chatroom.create!(chatroom_params)
-
+      chatroom = @current_user.owned_chats.create!(chatroom_params)
+      
       render json: chatroom, status: :created
   end
 
   # PATCH/PUT /chatrooms/1
   def update
-    if @chatroom.update(chatroom_params)
-      render json: @chatroom
-    else
-      render json: @chatroom.errors, status: :unprocessable_entity
-    end
+    @chatroom.update!(chatroom_params)
+
+    render json: @chatroom
   end
 
   # DELETE /chatrooms/1
   def destroy
     @chatroom.destroy
+    
+    head :no_content
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_chatroom
+
+    def check_owner      
       @chatroom = Chatroom.find(params[:id])
-      byebug
+
+      render json:{errors:["You are not the owner of this chat"]}, status: :unauthorized unless @chatroom.owner == @current_user
     end
 
     # Only allow a list of trusted parameters through.
