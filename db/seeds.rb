@@ -12,5 +12,5 @@ User.first.subscriptions.first.messages.create!(chatroom:Chatroom.first, content
 User.second.subscriptions.create!(chatroom: Chatroom.find_by(topic: "We've Got Worm"))
 User.second.subscriptions.find_by(chatroom: Chatroom.first).messages.create!(chatroom: Chatroom.first, content: "hello!")
 
-Book.create(title: "Worm" , author: "WildBow")
-Book.create(title: "Ward" , author: "WildBow")
+Book.create!(title: "Worm" , author: "WildBow")
+Book.create!(title: "Ward" , author: "WildBow")
