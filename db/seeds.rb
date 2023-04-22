@@ -6,5 +6,10 @@ Chatroom.create!(topic: "We've Got Ward", owner: User.last)
 Chatroom.create!(topic:"Where the Wild Things Are", owner: User.first)
 
 User.first.subscriptions.create!(chatroom: Chatroom.find_by(topic: "We've Got Ward"))
-
 User.first.subscriptions.first.messages.create!(chatroom:Chatroom.first, content: "Hellooo Chat")
+
+
+User.second.subscriptions.create!(chatroom: Chatroom.find_by(topic: "We've Got Worm"))
+User.second.subscriptions.find_by(chatroom: Chatroom.first).messages.create!(chatroom: Chatroom.first, content: "hello!")
+
+
