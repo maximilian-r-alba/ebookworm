@@ -1,8 +1,14 @@
+
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 function UserCard({user}){
-    console.log(user)
-    return <Card>
+    const navigate = useNavigate()
+
+    function handleClick(){
+        navigate(`/readers/${user.id}`)
+    }
+    return <Card onClick={handleClick}>
         <h1>{user.name}</h1>
         <img src="https://static.vecteezy.com/system/resources/thumbnails/009/734/564/small/default-avatar-profile-icon-of-social-media-user-vector.jpg" alt="profile picture"></img>
         <p>{user.headline}</p>
