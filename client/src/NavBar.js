@@ -17,7 +17,8 @@ function NavBar({setUser}){
         <StyledNav>
             <NavLink to="/">Home</NavLink>
             <NavLink to="/librarysearch">Search</NavLink>
-            {user ? <button onClick={handleLogout}>Logout</button> : <NavLink to="/login"> Login </NavLink>}
+            <NavLink to="readers">Readers</NavLink>
+            {user ? <button onClick={handleLogout}>Logout</button> : <><NavLink to="/login"> Login </NavLink> <NavLink to="/signup">Sign up</NavLink></>}
         </StyledNav>
         
     </div>
