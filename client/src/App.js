@@ -11,20 +11,27 @@ import BrowseUsers from './BrowseUsers';
 import UserForm from './UserForm';
 import UserPage from './UserPage';
 import BrowseBooks from './BrowseBooks';
+import BookPage from './BookPage';
 
 function App() {
   const [user, setUser] = useState(undefined)
-  const [users, setUsers] = useState(undefined)
-  const [books, setBooks] = useState(undefined)
+  const [users, setUsers] = useState([])
+  const [books, setBooks] = useState([])
 
   useEffect(() =>{
     fetch('/users').then(r => r.json()).then(u => setUsers(u))
     fetch('/books').then(r => r.json()).then(b => setBooks(b))
+    fetch('/me').then(r => r.json()).then( u => setUser(u))
   }, [])
+
 
 
   function handleUsers(newUser){
     setUsers([newUser, ...users])
+  }
+
+  function addBook(bookObj){
+    setBooks([bookObj , ...books])
   }
 
   return (
@@ -34,8 +41,9 @@ function App() {
         <NavBar setUser={setUser}/>
         <Routes>
           <Route path='/' element={<LandingPage />} />
-          <Route path='/library' element={<BrowseBooks />}/>
-          <Route path='/librarysearch' element={<OpenLibrary />} />
+          <Route path='/library' element={<BrowseBooks books={books} />}/>
+          <Route path='/librarysearch' element={<OpenLibrary addBook={addBook} />} />
+          <Route path='/books/:id' element={<BookPage books={books}/>} />
           <Route path='/login' element={<Login setUser={setUser}/>} />
           <Route path='/signup' element={<UserForm handleUsers={handleUsers} />} />
           <Route path='/readers' element={<BrowseUsers users={users}/>} />
