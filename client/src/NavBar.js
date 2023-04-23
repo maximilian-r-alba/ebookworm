@@ -13,7 +13,7 @@ function NavBar({setUser}){
               setUser(undefined)
             })
       }
-    return <div>
+    return <NavDiv>
         <StyledNav>
             <NavLink to="/">Home</NavLink>
             <NavLink to="/librarysearch">Search</NavLink>
@@ -22,11 +22,15 @@ function NavBar({setUser}){
             {user ? <button onClick={handleLogout}>Logout</button> : <><NavLink to="/login"> Login </NavLink> <NavLink to="/signup">Sign up</NavLink></>}
         </StyledNav>
         
-    </div>
+    </NavDiv>
 }
 
 export default NavBar
-
+const NavDiv = styled.div`
+    width: 100vw;
+    height: 10vh;
+    font-size: calc(10px + 1vw);
+`
 const StyledNav = styled.nav`
 .active{
     color: red;
