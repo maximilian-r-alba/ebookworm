@@ -5,7 +5,7 @@ import { UserContext } from "./UserContext"
 
 function OpenLibrary({addBook}){
 
-    const url = new URL(`http://openlibrary.org/search.json?`)
+    const url = new URL(`https://openlibrary.org/search.json?`)
     const user = useContext(UserContext)
     
     const [search, setSearch] = useState("")
@@ -25,7 +25,7 @@ function OpenLibrary({addBook}){
 
     function addBooktoLibrary(book){
 
-        fetch(`http://openlibrary.org${book.key}.json`).then((r) => r.json()).then( (obj)=> {
+        fetch(`https://openlibrary.org${book.key}.json`).then((r) => r.json()).then( (obj)=> {
            if(typeof(obj.description) == 'string'){
                return obj.description
            }
