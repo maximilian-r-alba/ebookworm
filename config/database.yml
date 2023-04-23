@@ -79,8 +79,14 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+# commented out for deploying
+# production:
+#   <<: *default
+#   database: ebookworm_production
+#   username: ebookworm
+#   password: <%= ENV["EBOOKWORM_DATABASE_PASSWORD"] %>
+
+# switched with above for deploying
 production:
   <<: *default
-  database: ebookworm_production
-  username: ebookworm
-  password: <%= ENV["EBOOKWORM_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
