@@ -8,15 +8,26 @@ class ReviewsController < ApplicationController
     end
 
     def update
-        @review.update!(review_params)
-        
-        render json: @review
+        review = Review.find(params[:id])
+        if review.user == @current_user
+            review.update!(review_params)
+            render json: review
+        else
+            render json: {errors: ["Cannot edit a different user's review"]}, status: :unauthorized
+        end
     end
 
     def destroy
-        @review.destroy
+        byebug
+        review = Review.find(params[:id])
+        if review.user == @current_user
+          review.destroy
+          head :no_content
+
+        else
+            render json: {errors: ["Cannot edit a different user's review"]}, status: :unauthorized
+        end
         
-        head :no_content
     end
 
     private
