@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
         if user&.authenticate(params[:password])
             session[:user_id] = user.id
              # might not want/need to see all subscription messages
-            render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats'], status: :created
+            render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats', 'reviews', 'books'], status: :created
         else
            render json: {errors:[ "Invalid Username or password"]}, status: :unauthorized
         end
