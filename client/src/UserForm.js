@@ -1,7 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-function UserForm({handleUsers}){
+function UserForm({ user , handleUsers , setFormView}){
+    // user could in theory go to user form then login and are now still on sign up page
+    useEffect(()=>{
+        if(user){
+            setUserParams({name: user.name, username:user.username, headline: user.headline, profile_picture: user.profile_picture})
+        }
+    },[])
+
     const [userParams, setUserParams] = useState({name:"", username:"", password:"", password_confirmation:"", headline:"", profile_picture:""})
     const [errors, setErrors] = useState()
     const navigate = useNavigate()
@@ -15,7 +22,26 @@ function UserForm({handleUsers}){
 
     function handleSubmit(e){
         e.preventDefault()
-        fetch('/users', {
+        if(user){
+            fetch(`/users/${user.id}`, {
+                method: "PATCH",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify(userParams)
+            }).then( r => {
+                if(r.ok){
+                  
+                    r.json().then( u => {
+                        handleUsers(u)
+                        setFormView(false)
+                    })
+                }
+                else{
+                    r.json().then(d => setErrors(d.errors))
+                }
+            })
+        }
+        else{
+            fetch('/users', {
             method: "POST",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify(userParams)
@@ -30,12 +56,14 @@ function UserForm({handleUsers}){
                 r.json().then(d => setErrors(d.errors))
             }
         })
+    }
         
     }
+
     return <FormContainer>
     {errors ? <ErrorDiv>{errors.map((error) => <p>{error}</p>)}</ErrorDiv> : <></>}
+    <button onClick={() => setFormView(false)}>X</button>
     <StyledForm onSubmit={handleSubmit}>
-        <h1>Sign up</h1>
         <label htmlFor="name">
             Name:
         </label>
