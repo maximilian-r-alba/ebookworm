@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   
+  mount ActionCable.server => '/cable'
+
   resources :books, only: [:index, :show, :create]
   resources :messages, only: [:create , :update , :destroy]
   resources :chatrooms
   resources :reviews
-  resources :users
+  resources :users, only: [:index, :create, :update, :destroy]
   resources :subscriptions, only: [:create , :destroy]
 
   get '/me', to: 'users#show'

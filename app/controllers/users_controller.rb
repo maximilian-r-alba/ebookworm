@@ -4,14 +4,14 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    render json: User.all, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
+    render json: User.all, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats', 'reviews', 'books']
   end
 
   # GET /users/1
   def show
     user = User.find_by(id:session[:user_id])
         if user
-          render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats']
+          render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats', 'reviews', 'books']
         else
             render json: {error: "Not authorized"}, status: :unauthorized
         end
@@ -28,17 +28,24 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
+      user = User.find(params[:id])
+      if user == @current_user
       @current_user.update!(user_params)
 
       render json: @current_user
+      end
   end
 
   # DELETE /users/1
   def destroy
+    if User.find(params[:id]) == @current_user
     @current_user.destroy
     session.delete :user_id
-
     head :no_content
+    
+    else
+      render json: {errors: ["You cannot delete another user's profile"]}, status: :unauthorized
+    end
   end
 
   private
