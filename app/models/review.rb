@@ -1,5 +1,9 @@
 class Review < ApplicationRecord
-  validates :rating, numericality: { only_integer: true , in: (1..5) , allow_nil: true}
+  # use uniqueness to prevent a user from spamming reviews?
+  validates :rating, numericality: { only_integer: true , in: (0..5)}
+  validates :book_id, uniqueness: {scope: :user_id}
+  validates :title, length: {in: 0..255, allow_nil: false}
+  validates :body, length: {in: 0..500000, allow_nil: false}
   after_save :update_book_rating
   after_destroy :update_book_rating
   belongs_to :user
@@ -11,12 +15,13 @@ class Review < ApplicationRecord
     
     book = self.book
     reviews = self.book.reviews
-    rating = (reviews.map{|review| review[:rating]}.sum.to_f / reviews.length)
-  
-    if rating.nan?
+    
+    if reviews.length == 0
       book.update(rating: 0.0)
     else
-      book.update(rating: rating)
+    rating = (reviews.map{|review| review[:rating]}.sum.to_f / reviews.filter{|r| r.rating != 0}.length)
+  
+    book.update(rating: rating)
     end
     
   end
