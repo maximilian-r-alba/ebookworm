@@ -10,4 +10,6 @@ class Chatroom < ApplicationRecord
     def subscribe_owner
         self.owner.subscriptions.create!(chatroom: self)
     end
+
+    
 end

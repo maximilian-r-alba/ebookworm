@@ -2,8 +2,11 @@ class MessagesController < ApplicationController
     before_action :check_user, only: %i[ update destroy ]
 
     def create
-        message = @current_user.subscriptions.find(params[:subscription_id]).messages.create!(message_params)
         
+        message = @current_user.subscriptions.find(params[:subscription_id]).messages.create!(message_params)
+  
+        
+        ChatChannel.broadcast_to(message.chatroom, message)
         render json: message , status: :created
     end
 

@@ -1,6 +1,6 @@
 class ChatroomsController < ApplicationController
   before_action :check_owner, only: %i[ update destroy ]
-
+  skip_before_action :authorize, only: [:index, :show]
   # GET /chatrooms
   def index
     render json: Chatroom.all
