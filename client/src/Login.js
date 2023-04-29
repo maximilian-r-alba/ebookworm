@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import styled from "styled-components"
 
-function Login({setUser}){
-
+function Login({setUser , setFormView}){
+    
     const [loginCreds, setLoginCreds] = useState({username: "", password: ""})
     const [errors, setErrors] = useState([])
-    const navigate = useNavigate()
+
     function handleChange(e){
-        const key = e.target.name
+        const key = e.target.id
         const value = e.target.value
         setLoginCreds({...loginCreds, [key]: value})
     }
@@ -21,7 +21,7 @@ function Login({setUser}){
         }).then( r => {
             if(r.ok){
                 r.json().then( u => setUser(u))
-                navigate('/')
+                setFormView(false)
             }
             else{
                 r.json().then(data => setErrors(data.errors))
@@ -29,15 +29,37 @@ function Login({setUser}){
         })
     }
 
-    return <>
-    {errors ? errors.map(e => <p>{e}</p>) : <></>}
-    <form onSubmit={handleSubmit}>
-        <input type="text" name="username" value={loginCreds['username']} onChange={handleChange}/>
-        <input type="password" name="password" value={loginCreds['password']} onChange={handleChange}/>
-        <input type="submit" />
-    </form>
+    return <div>
     
-    </>
+    <button onClick={()=> setFormView(false)}>X</button>
+    {errors ? errors.map(e => <p>{e}</p>) : <></>}
+    <StyledForm onSubmit={handleSubmit}>
+        <label htmlFor="username" >
+            Username:
+        </label>
+        <input type="text" id="username" value={loginCreds['username']} onChange={handleChange}/>
+
+        <label htmlFor="password">
+            Password:
+        </label>
+
+        <input type="password" id="password" value={loginCreds['password']} onChange={handleChange}/>
+        <input type="submit" />
+    </StyledForm>
+    
+    </div>
 }
 
 export default Login
+
+// possibly style div to move button and error message
+const StyledForm = styled.form`
+
+display: flex;
+flex-direction: column;
+align-items: center;
+font-size: calc(10px + 1vw);
+gap: 2vw;
+min-height: 30vw;
+width: 50vw;
+`

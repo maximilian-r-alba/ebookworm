@@ -24,13 +24,22 @@ function OpenLibrary({addBook}){
     }, [page])
 
     function addBooktoLibrary(book){
-
+        const filterResults = searchResults.filter((b) => b.key !== book.key)
         fetch(`https://openlibrary.org${book.key}.json`).then((r) => r.json()).then( (obj)=> {
+   
+          
            if(typeof(obj.description) == 'string'){
                return obj.description
            }
+           
+           else if(obj.description){
+            return obj.description.value
+           } else{
+            return undefined
+           }
         }
            ).then((description) => {
+            
             fetch('/books', {
                 method: "POST",
                 headers: {"Content-Type" : "application/json"},
@@ -38,6 +47,7 @@ function OpenLibrary({addBook}){
             }).then( r => {
                 if (r.ok){
                     r.json().then( bookObj => addBook(bookObj))
+                    setSearchResults(filterResults)
                 }
                 else{
                     r.json().then(errorObj => alert(errorObj.errors))
@@ -45,11 +55,9 @@ function OpenLibrary({addBook}){
             })
            })
            
-   
-        
     }
     useEffect(()=>{
-        setSearchCards(searchResults.map((book) => <BookCard handleClick={addBooktoLibrary} book={book}/>))
+        setSearchCards(searchResults.map((book) => <BookCard key={book.key} handleClick={addBooktoLibrary} book={book}/>))
     }, [searchResults])
 
 
@@ -80,17 +88,6 @@ function OpenLibrary({addBook}){
             setSearchResults(bookResultsArr)
        })
     }
-
-//     for (const book of bookResultsArr){
-
-//         fetch(`http://openlibrary.org${book.key}.json`).then((r) => r.json()).then( obj => {
-//        if(typeof(obj.description) == 'string'){
-//            book['description']= obj.description
-//        }
-       
-//    })
-// }
-
 
     return <PageDiv>
     <HeaderDiv searched={searched}>
