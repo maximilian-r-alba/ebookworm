@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   
-  mount ActionCable.server => '/cable'
+  mount ActionCable.server => 'wss://ebookwormclub-project.onrender.com/cable'
 
   resources :books, only: [:index, :show, :create]
   resources :messages, only: [:create , :update , :destroy]
