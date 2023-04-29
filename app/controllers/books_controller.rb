@@ -15,6 +15,7 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
+    
     book = Book.create!(book_params)
     render json: book, status: :created
   end
