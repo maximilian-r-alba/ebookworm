@@ -12,14 +12,13 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
     
     const {id} = useParams()
     const [user, setUser] = useState()
-    console.log(user)
-    const navigate = useNavigate()
+
 
     useEffect(()=>{
         setUser(users.find((user) => user.id == id))
     }, [users , id])
   
-    //editing user always requires editing password rn
+ 
     function handleEdit(){
         handleFormContainer('user')
     }
@@ -147,7 +146,7 @@ padding: 20px;
 const ChatsDiv = styled.div`
 grid-area: chat;
 display: flex;
-border: solid;
+
 height: 50vh;
 flex-direction: column;
 flex-wrap: nowrap;

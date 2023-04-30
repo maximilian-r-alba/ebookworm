@@ -117,6 +117,7 @@ gap: .75vh;
 img{
     height: 40vh;
     width: 30vh;
+    border: solid;
 }
 button{
    /* ${props => props.added ? 'display: none' : null} */
