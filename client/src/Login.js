@@ -1,5 +1,6 @@
 import { useState } from "react"
 import styled from "styled-components"
+import {AiOutlineCloseSquare} from "react-icons/ai"
 
 function Login({setUser , setFormView}){
     
@@ -29,9 +30,9 @@ function Login({setUser , setFormView}){
         })
     }
 
-    return <div>
+    return <ContainerDiv>
     
-    <button onClick={()=> setFormView(false)}>X</button>
+    <AiOutlineCloseSquare size={'5%'} onClick={()=> setFormView(false)} />
     {errors ? errors.map(e => <p>{e}</p>) : <></>}
     <StyledForm onSubmit={handleSubmit}>
         <label htmlFor="username" >
@@ -47,12 +48,22 @@ function Login({setUser , setFormView}){
         <input type="submit" />
     </StyledForm>
     
-    </div>
+    </ContainerDiv>
 }
 
 export default Login
 
 // possibly style div to move button and error message
+const ContainerDiv = styled.div`
+display: flex;
+flex-direction: column;
+svg{
+    align-self: end;
+    color: red;
+    cursor: pointer;
+}
+
+`
 const StyledForm = styled.form`
 
 display: flex;
@@ -62,4 +73,5 @@ font-size: calc(10px + 1vw);
 gap: 2vw;
 min-height: 30vw;
 width: 50vw;
+
 `
