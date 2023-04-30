@@ -33,8 +33,8 @@ flex-direction: column;
 align-items: center;
 margin: 1%;
 padding-bottom: .5%;
-width: 10%;
-height: width + 15;
+width: 10vw;
+height: 25vw;
 background-color: white;
 cursor: pointer;
 h1{
