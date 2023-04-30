@@ -30,13 +30,15 @@ function BrowseBooks ({books}) {
 export default BrowseBooks
 
 const RouteDiv = styled.div`
-/* border: solid; */
-width: 100vw;
-/* height: 86%; */
+
+width: 100%;
+height: 100vh;
+
 div{
     font-size: calc(6px + 1vw);
     form{
         margin-left: 1vw;
+        margin-bottom: 3vh;
     }
     form *{
         font-size: calc(2px + 1vw);
@@ -56,10 +58,10 @@ div{
 
 const Container = styled.div`
 border-top: solid;
-height: 60vh;
-width: 96vw;
-margin-top: 2vh;
-margin-left: 1vw;
+height: 80%;
+width: 100%;
+
+
 display: flex;
 flex-wrap: wrap;
 justify-content: center;

@@ -34,7 +34,7 @@ align-items: center;
 margin: 1%;
 padding-bottom: .5%;
 width: 10%;
-height: 65%;
+height: width + 15;
 background-color: white;
 cursor: pointer;
 h1{

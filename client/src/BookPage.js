@@ -23,16 +23,6 @@ function BookPage({ user , users , books, formatUser, handleFormContainer}){
 
     const {id} = useParams()
     const [book, setBook] = useState()
-    console.log(book)
-    // useEffect(()=>{
-        
-    //     if(book && book.reviews) {
-    //         const cards = book.reviews.map((review) => <ReviewCard key={review.id} review={review} book={book} handleFormContainer={handleFormContainer} users={users}/>) 
-    //         console.log('book changed')
-    //         setReviews(cards)
-    // }
-    // }, [book])
-
 
     const [isAdded, setIsAdded] = useState()
 
@@ -90,10 +80,9 @@ export default BookPage
 
 const BookPageContainer = styled.div`
 display: grid;
-max-height: 130vh;
 margin: 3vh;
 grid-template-columns: 1fr 3fr 1fr;
-grid-template-rows: .5fr .1fr 2fr .1fr 4fr;
+grid-template-rows: .5fr .1fr 1.5fr .1fr 1.5fr;
 grid-template-areas: 
 "cover info info"
 ". descriptionLabel ."
@@ -115,8 +104,6 @@ h2.review{
 
 const InfoDiv = styled.div`
 grid-area: info;
-
-
 `
 const CoverDiv = styled.div`
 grid-area: cover;
@@ -151,7 +138,7 @@ pre{
 
 const ReviewsDiv = styled.div`
 grid-area: reviews;
-max-height: 30vh;
+height: 70vh;
 overflow: scroll;
 word-wrap: break-word;
 overflow-x: hidden;

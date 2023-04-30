@@ -30,7 +30,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     function scrolltoBottom (data){
         if(!messagesContainer) return;
         messagesContainer.scrollTop = messagesContainer.scrollHeight
-
     }
 
     useEffect(() =>{
@@ -53,12 +52,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             connected: () => console.log('connected'),
             received: data => handleWS(data)
             
-            // handleWS(data)
-                
-                // setChat(chat => { return {...chat, 'messages' : [...messages , data]}})
-                // scrolltoBottom()
-                // setMessages(messages => [...messages, data])
-            
         })
         return () => {
             console.log('disconnect')
@@ -66,10 +59,12 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         }
     }, [])
 
-    function handleWS(d){
-        console.log(d)
-        setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
+    useEffect(() => {
         scrolltoBottom()
+    }, [messages])
+
+    function handleWS(d){
+        setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
         setMessages(messages => [...messages, d])
     }
 
