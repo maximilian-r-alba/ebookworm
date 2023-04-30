@@ -1,5 +1,5 @@
 class MessageSerializer < ActiveModel::Serializer
   attributes :id, :content, :created_at
-  # has_one :subscription
+  belongs_to :subscription
   # has_one :chatroom
 end
