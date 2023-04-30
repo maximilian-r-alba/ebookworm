@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   resources :books, only: [:index, :show, :create]
-  resources :messages, only: [:create , :update , :destroy]
+  resources :messages, only: [:create]
   resources :chatrooms
   resources :reviews
   resources :users, only: [:index, :create, :update, :destroy]
