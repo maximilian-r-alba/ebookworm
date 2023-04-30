@@ -81,10 +81,10 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     }, [chat])
 
     useEffect(() => {
-        // user && user.subscriptions.some( s=> s.chatroom_id == id)
-        if(subscription) {
+        
+        if(user && user.subscriptions.some( s=> s.chatroom_id == id)) {
 
-            // setSubscription(user.subscriptions.find(s => s.chatroom_id == id))
+            setSubscription(user.subscriptions.find(s => s.chatroom_id == id))
             setMessageParams({...messageParams, 'subscription_id':user.subscriptions.find(s => s.chatroom_id == id).id})
         }
     }, [user])
