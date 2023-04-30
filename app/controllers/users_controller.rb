@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    render json: User.all, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats', 'reviews', 'books']
+    render json: User.all, include: ['subscriptions', 'chatrooms', 'owned_chats', 'reviews', 'books']
   end
 
   # GET /users/1
@@ -12,12 +12,11 @@ class UsersController < ApplicationController
     
     user = User.find_by(id:session[:user_id])
         if user
-          render json: user, include: ['subscriptions', 'subscriptions.messages', 'chatrooms', 'owned_chats', 'reviews', 'books']
+          render json: user, include: ['subscriptions', 'chatrooms', 'owned_chats', 'reviews', 'books']
         else
             render json: {error: "Not authorized"}, status: :unauthorized
         end
-    # might not want/need to see all subscription messages
-   
+
   end
 
   # POST /users

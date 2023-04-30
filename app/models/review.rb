@@ -1,5 +1,5 @@
 class Review < ApplicationRecord
-  # use uniqueness to prevent a user from spamming reviews?
+ 
   validates :rating, numericality: { only_integer: true , in: (0..5)}
   validates :book_id, uniqueness: {scope: :user_id}
   validates :title, length: {in: 0..255, allow_nil: false}

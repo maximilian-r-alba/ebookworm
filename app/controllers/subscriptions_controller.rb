@@ -1,8 +1,6 @@
 class SubscriptionsController < ApplicationController
 
     def create
-
-        
         subscription = @current_user.subscriptions.create!(chatroom_id: params[:chatroom_id])
 
         render json: subscription, status: :created
