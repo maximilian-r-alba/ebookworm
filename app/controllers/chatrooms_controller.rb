@@ -8,7 +8,7 @@ class ChatroomsController < ApplicationController
 
   # GET /chatrooms/1
   def show
-    render json: Chatroom.find(params[:id])
+    render json: Chatroom.find(params[:id]), include:['subscriptions' , 'messages', 'messages.subscription']
   end
 
   # POST /chatrooms
@@ -27,6 +27,7 @@ class ChatroomsController < ApplicationController
 
   # DELETE /chatrooms/1
   def destroy
+
     @chatroom.destroy
     
     head :no_content

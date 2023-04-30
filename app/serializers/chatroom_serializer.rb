@@ -1,5 +1,5 @@
 class ChatroomSerializer < ActiveModel::Serializer
   attributes :id, :topic
   has_many :subscriptions
-  has_many :messages, through: :subscriptions
+  has_many :messages, through: :subscriptions, serializer: ChatroomMessageSerializer
 end
