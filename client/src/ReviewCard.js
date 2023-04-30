@@ -25,26 +25,27 @@ export default function ReviewCard({ user , users, review , handleFormContainer 
                 formatUser(review, book, true)
             }
             else{
-                r.json().then(console.log)
+                r.json().then(error => alert(error.errors))
             }
         })
     }
+
     return <>
     {reviewer ? <CardDiv>
         {currentUser && currentUser.id == reviewer.id ? <div className="edits"><AiFillEdit size={'20%'} onClick={handleEdits}/> <FaTrashAlt size={'20%'} onClick={handleDelete}/></div> : <></>}
-        <div className="reviewer">
-            <h2>{reviewer.name}</h2>
-            <img src={reviewer.profile_picture} alt="profile_picture" />
-            {user ? <h3>{book.title}</h3> : <></>}
-        </div>
-        <div className="title" >
-            <p><StarsRating givenRating={review.rating}/>{review.rating}</p>
-            <h1>{review.title}</h1>
+            <div className="reviewer">
+                <h2>{reviewer.name}</h2>
+                <img src={reviewer.profile_picture} alt="profile_picture" />
+                {user ? <h3>{book.title}</h3> : <></>}
+            </div>
 
-        </div>
+            <div className="title" >
+                <p><StarsRating givenRating={review.rating}/>{review.rating}</p>
+                <h1>{review.title}</h1>
+            </div>
       
-        <div className="body">
-        <pre>{review.body}</pre>
+            <div className="body">
+                <pre>{review.body}</pre>
             </div>
     </CardDiv> :<></>}
     

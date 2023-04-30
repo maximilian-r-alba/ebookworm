@@ -7,10 +7,11 @@ import { useNavigate } from "react-router-dom"
 function LandingPage({handleUsers}){
     const user = useContext(UserContext)
     const navigate = useNavigate()
+    
     return <StyledLanding>
     {user ? 
     <>
-   {navigate('/library')}
+   {navigate('/books')}
     </>
     
     

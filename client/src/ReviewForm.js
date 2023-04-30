@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { UserContext } from "./UserContext"
 import styled from "styled-components"
 import {AiOutlineCloseSquare} from "react-icons/ai"
+
 export default function ReviewForm({book , setFormView, formatUser}){
 
     const [reviewParams, setReviewParams] = useState({title: "", body: "", rating: 0, book_id: book.id, id: undefined})
@@ -16,8 +17,6 @@ export default function ReviewForm({book , setFormView, formatUser}){
                 setReviewParams({id: prevReview['id'], title: prevReview['title'], body: prevReview['body'], rating: prevReview['rating']})
             }
         }
-       
-        
     }, [])
 
 
@@ -68,7 +67,7 @@ export default function ReviewForm({book , setFormView, formatUser}){
         }
         
     }
-    console.log(errors)
+
     return <FormContainer>
         <AiOutlineCloseSquare size={'5%'} onClick={() => setFormView(false)}/>
         {errors ? <ErrorDiv>{errors.map((error) => <p>{error}</p>)}</ErrorDiv> : <></>}
@@ -102,7 +101,7 @@ const StyledForm = styled.form`
  margin: 2vw;
 display: flex;
 flex-direction: column;
-/* gap: 5px; */
+
 label{
     font-size: calc(6px + .5vw);
     margin-top: 15px;
@@ -150,9 +149,6 @@ font-size: calc(10px + .75vw);
 padding: 20px;
 max-width: 20vw;
 align-self: center;
-/* position: absolute;
-top: 10vh;
-left: 5vw; */
 `
 
 const FormContainer = styled.div`

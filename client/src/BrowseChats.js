@@ -1,7 +1,9 @@
-import ChatCard from "./ChatCards";
+
 import { useState } from "react";
 import styled from "styled-components";
+
 import ChatroomForm from "./ChatroomForm";
+import ChatCard from "./ChatCards";
 
 export default function BrowseChats({ user , formatChat , chatrooms}){
 
@@ -12,9 +14,11 @@ export default function BrowseChats({ user , formatChat , chatrooms}){
 
     return<RouteDiv>
         {user ? <h2 onClick={() => {setFormView(!formView)}}>{formView ? "Submit a Topic" : "Create New Chat?"}</h2> : <></>}
+
         {formView ? <ChatroomForm setFormView={setFormView} formatChat={formatChat} /> : <></>}
+
         <div className="chatContainer">
-        {chatrooms.map((chat) => <ChatCard key={chat.id} chat={chat} />)}
+            {chatrooms.map((chat) => <ChatCard key={chat.id} chat={chat} />)}
         </div>
       
     </RouteDiv>

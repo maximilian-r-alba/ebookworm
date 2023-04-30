@@ -1,13 +1,10 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import BookCard from "./BookCard"
-import { UserContext } from "./UserContext"
 
 function OpenLibrary({addBook}){
 
     const url = new URL(`https://openlibrary.org/search.json?`)
-    const user = useContext(UserContext)
-    
     const [search, setSearch] = useState("")
     const [searchParams, setSearchParams] = useState()
     const [page, setPage] = useState(1)
@@ -28,15 +25,15 @@ function OpenLibrary({addBook}){
         const filterResults = searchResults.filter((b) => b.key !== book.key)
         fetch(`https://openlibrary.org${book.key}.json`).then((r) => r.json()).then( (obj)=> {
    
-          
            if(typeof(obj.description) == 'string'){
                return obj.description
            }
            
            else if(obj.description){
-            return obj.description.value
-           } else{
-            return undefined
+                return obj.description.value
+           } 
+           else{
+                return undefined
            }
         }
            ).then((description) => {
@@ -58,7 +55,6 @@ function OpenLibrary({addBook}){
            
     }
     useEffect(()=>{
-       
         setSearchCards(searchResults.map((book) => <BookCard key={book.key} addBooktoLibrary={addBooktoLibrary} book={book}/>))
     }, [searchResults])
 

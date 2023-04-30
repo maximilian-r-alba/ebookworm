@@ -28,7 +28,6 @@ import BookPage from './BookPage';
  
 function App() {
  
- 
   const [user, setUser] = useState(undefined)
   const [users, setUsers] = useState([])
   const [books, setBooks] = useState([])
@@ -56,9 +55,7 @@ function App() {
 
  
   useEffect(() => {
-  
-    if(user ){
-      
+    if(user){
       const filterUsers = users.filter((u) => u.id !== user.id)
       setUsers([{...user}, ...filterUsers])
     }
@@ -69,7 +66,6 @@ function App() {
   }
 
   function calcRating(book){
-
     return parseFloat((book.reviews.map((r) => r.rating).reduce((total, current) => total+current , 0)/book.reviews.filter((r) => r.rating !== 0 ).length).toFixed(2))
   }
 
@@ -81,6 +77,7 @@ function formatUser(review, book, isDelete){
   
   const filterUserReviews = user.reviews.filter((r) => r.id !== review.id)
   const filterUserBooks = user.books.filter((b) => b.id !== book.id)
+
   if(isDelete){
     
     setUser({...user, 'books': filterUserBooks, 'reviews': filterUserReviews})
@@ -91,7 +88,7 @@ function formatUser(review, book, isDelete){
 
   else{
 
-    const newBookObj = {...book, 'reviews': [{...review}, ...bookReviews]}
+  const newBookObj = {...book, 'reviews': [{...review}, ...bookReviews]}
 
   newBookObj['rating'] = calcRating(newBookObj)
 
@@ -121,7 +118,6 @@ function deleteUser(user){
 
   const filterBookReviews = books.map((book) => {
     const filterReviews = book.reviews.filter((review) => review.user_id !== user.id)
-  
 
     return {...book, 'rating':calcRating({...book, 'reviews':filterReviews}), 'reviews':filterReviews}
   })
@@ -143,7 +139,7 @@ function formatChat(chat, isDelete){
 
     setChatrooms(filterChatrooms)
     setUsers(filterUsers)
-    navigate('/library')
+    navigate('/books')
   }
   else{
     setChatrooms([chat , ...filterChatrooms])
@@ -165,7 +161,7 @@ function formatChat(chat, isDelete){
         case 'user':
           return <UserForm user={user} setUser={setUser} handleUsers={handleUsers} setFormView={setFormView} />
         case 'signup':
-          return <UserForm handleUsers={handleUsers} setFormView={setFormView} popup={true}/>
+          return <UserForm handleUsers={handleUsers} popup={true} setFormView={setFormView}/>
         case 'chat':
           return <ChatroomForm formatChat={formatChat} chat={load} setFormView={setFormView} />
     }}
@@ -178,16 +174,23 @@ function formatChat(chat, isDelete){
       <UserContext.Provider value = {user}>
 
         <NavBar user={user} handleFormContainer={handleFormContainer} handleLogout= {handleLogout} setUser={setUser}/>
+
         <Routes>
           <Route path='/' element={<LandingPage handleUsers={handleUsers}/>} />
-          <Route path='/library' element={<BrowseBooks books={books} />}/>
+
+          <Route path='/signup' element={<UserForm handleUsers={handleUsers} />} />
+
+          <Route path='/books' element={<BrowseBooks books={books} />}/>
           <Route path='/librarysearch' element={<OpenLibrary addBook={addBook} />} />
           <Route path='/books/:id' element={<BookPage formatUser={formatUser} user={user} users={users} books={books} handleFormContainer={handleFormContainer}/>} />
-          <Route path='/signup' element={<UserForm handleUsers={handleUsers} />} />
+
+          
           <Route exact path='/readers' element={<BrowseUsers users={users}/>} />
           <Route path='/readers/:id' element={<UserPage currentUser={user} users={users} formatUser={formatUser} deleteUser={deleteUser} books={books} handleFormContainer={handleFormContainer} />}/>
+
           <Route path='/chatrooms' element={<BrowseChats formatChat={formatChat} user={user} chatrooms={chatrooms} />} />
           <Route path='/chatrooms/:id' element={<Chatroom user={user} setUser={setUser} formatChat={formatChat} chatrooms={chatrooms} users={users} handleFormContainer={handleFormContainer}/>} />
+
         </Routes>
 
         {formView ? createPortal(<FormContainer form={form}/>, portalSite)  : <></>}

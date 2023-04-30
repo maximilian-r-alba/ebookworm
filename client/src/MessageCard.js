@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { UserContext } from "./UserContext"
 import { useContext } from "react"
 
-export default function MessageCard({chat ,msg , subscribers}){
+export default function MessageCard({msg , subscribers}){
 
     const user = subscribers.find(u => {
         
@@ -36,7 +36,7 @@ const MessageDiv = styled.div`
 display: flex;
 ${props => props.isUser ? "align-self: flex-end;" : ""}
 ${props => props.isUser ? "padding-right: 0;" : ""}
-/* align-self: flex-end; */
+
 width: fit-content;
 margin-top: 10px;
 

@@ -6,6 +6,9 @@ import StarsRating from "./StarRating"
 
 function BookPage({ user , users , books, formatUser, handleFormContainer}){
    
+    const {id} = useParams()
+    const [book, setBook] = useState()
+    const [isAdded, setIsAdded] = useState()
 
     useEffect(() => {
         if(user && user.books){
@@ -15,16 +18,9 @@ function BookPage({ user , users , books, formatUser, handleFormContainer}){
     }, [user])
 
     useEffect(() =>{
-   
-        const newBook = [...books.filter((book) => book.id == id)].pop()
-        setBook(newBook)
+        const bookobj = books.find((book) => book.id == id)
+        setBook(bookobj)
     }, [books])
-
-
-    const {id} = useParams()
-    const [book, setBook] = useState()
-
-    const [isAdded, setIsAdded] = useState()
 
 
     function addToUser(){
@@ -40,7 +36,7 @@ function BookPage({ user , users , books, formatUser, handleFormContainer}){
                 })
             }
             else{
-                r.json().then(console.log)
+                r.json().then(errorObj => alert(errorObj.errors) )
             }
         })
     }
@@ -51,17 +47,20 @@ function BookPage({ user , users , books, formatUser, handleFormContainer}){
         <InfoDiv>
             <h1>{book.title}</h1>
             <p>{book.author}</p>
-            {book.rating ? <p><StarsRating givenRating={book.rating}/> {book.rating}</p> : <p>0.0</p>}
+
+            {book.rating ? <p><StarsRating givenRating={book.rating}/> {book.rating.toFixed(2)}</p> : <p>0.0</p>}
+
             {user ? <button onClick={() => handleFormContainer('review', book)}>Leave Review</button> : <button disabled>Leave Review</button>}
         </InfoDiv>
         
         <CoverDiv added={isAdded}>
             <img src={book.img_url} alt="bookCover" />
+
             {isAdded || !user? <button disabled className="saved">{ user ? "Book Saved" : "Login to Save Books"}</button> : <button onClick={addToUser}>Save to Profile</button>}
         </CoverDiv>
+
     <h2 className="description">Summary</h2>
         <DescriptionDiv>
-            
             <pre>{book.description}</pre>
         </DescriptionDiv>
 
@@ -120,7 +119,6 @@ img{
     border: solid;
 }
 button{
-   /* ${props => props.added ? 'display: none' : null} */
    width: 5vw;
 }
 `

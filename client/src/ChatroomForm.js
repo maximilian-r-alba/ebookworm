@@ -1,6 +1,7 @@
 import { useState , useEffect} from "react"
 import {AiOutlineCloseSquare} from "react-icons/ai"
 import styled from "styled-components"
+
 export default function ChatroomForm({formatChat , setFormView , chat}){
 
     useEffect(() => {
@@ -29,7 +30,7 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
                     r.json().then(chat => formatChat(chat))
                 }
                 else{
-                    r.json().then(console.log)
+                    r.json().then(error => alert(error.errors))
                 }
             })
         }
@@ -43,7 +44,7 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
                     r.json().then(chat => formatChat(chat))
                 }
                 else{
-                    r.json().then(console.log)
+                    r.json().then(error => alert(error.errors))
                 }
             })
         }

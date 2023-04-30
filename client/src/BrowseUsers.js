@@ -1,6 +1,7 @@
-import UserCard from "./UserCard"
 import { useState } from "react"
 import styled from "styled-components"
+
+import UserCard from "./UserCard"
 
 function BrowseUsers({users}){
     const [filterParams, setFilterParams] = useState("")
@@ -12,7 +13,9 @@ function BrowseUsers({users}){
             </label>
             <input type="text" id="name" value={filterParams} onChange={(e) => setFilterParams(e.target.value)}></input>
         </form>
+
         <h1>Readers</h1>
+        
         <CardContainer>
             {users.filter(u => u.name.toLowerCase().includes(filterParams.toLowerCase())).map((user) => <UserCard  key={user.id} user={user}/>)}
         </CardContainer>

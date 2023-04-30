@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import ReviewCard from "./ReviewCard"
 import BookCard from "./BookCard"
@@ -7,6 +7,7 @@ import ChatCard from "./ChatCards"
 
 import {FaTrashAlt} from 'react-icons/fa'
 import {AiFillEdit} from 'react-icons/ai'
+
 function UserPage({currentUser , users , books ,  handleFormContainer , formatUser , deleteUser}){
 
     
@@ -26,9 +27,7 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
     function handleDelete(){
         fetch(`/users/${id}`, {method:"DELETE"}).then(r => {
             if(r.ok){
-                
                 deleteUser(user)
-                
             }
             else{
                 r.json().then(console.log)

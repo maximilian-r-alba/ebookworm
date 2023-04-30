@@ -1,17 +1,13 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styled from 'styled-components'
 
-function NavBar({ user , setUser , handleFormContainer , handleLogout}){
+function NavBar({ user , handleFormContainer , handleLogout}){
     
-   
-   
-
-    //   switching to profile from other user doesnt chagne
     return <NavDiv>
         <StyledNav id="NavBar">
            { !user ? <NavLink to="/">Home</NavLink> : <></>}
             
-            <NavLink to="/library">Library</NavLink>
+            <NavLink to="/books">Library</NavLink>
             <NavLink to="/readers">Readers</NavLink>
             <NavLink to="/chatrooms">Chatrooms</NavLink>
             {user ? <>

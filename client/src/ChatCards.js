@@ -5,6 +5,7 @@ import {FaBookReader} from "react-icons/fa"
 export default function ChatCard({chat}){
 
     const navigate = useNavigate()
+    
     return<ChatCardDiv onClick={() => navigate(`/chatrooms/${chat.id}`)}>
         <h1>{chat.topic}</h1>
         {chat.subscriptions ? <p>{chat.subscriptions.length} <FaBookReader /></p> : <></>}

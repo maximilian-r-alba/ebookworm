@@ -1,4 +1,4 @@
-import { useContext, useEffect , useState } from "react"
+import { useEffect , useState } from "react"
 import { useParams } from "react-router-dom"
 
 import MessageCard from "./MessageCard"
@@ -8,23 +8,17 @@ import {AiOutlineSend} from "react-icons/ai"
 import {FaTrashAlt} from 'react-icons/fa'
 import {AiFillEdit} from 'react-icons/ai'
 import consumer from "./cable"
-import { UserContext } from "./UserContext"
-
-
 
 export default function Chatroom({ formatChat , handleFormContainer , user , setUser , users}){
     
    
     const [chat, setChat] = useState()
-    const [guid, setGuid] = useState("")
     const [messages, setMessages] = useState([])
     const {id} = useParams()
     const [subscribers, setSubscribers] = useState()
     const [subscription, setSubscription] = useState() 
 
-
     const [messageParams, setMessageParams] = useState({subscription_id: "", chatroom_id: id, content: ""})
-
     const messagesContainer = document.getElementById('messages')
     
     function scrolltoBottom (){
@@ -42,29 +36,24 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     
         return 0
     }
+
     useEffect(() =>{
-       
-        // setChat(chatrooms.find((c) => c.id == id))
-        // am i allowed to fetch in this case
-        // setMessages(chatrooms.find((c) => c.id == id).messages)
+
         fetch(`/chatrooms/${id}`).then(r => r.json()).then(data => {
             setChat(data)
             setMessages(data.messages.sort(sortMessages))
         })
-        setGuid(Math.random().toString(36).substring(2,15))
 
-        
         consumer.subscriptions.create({
             channel: "ChatChannel",
-            room: id,
-            id: guid,
+            room: id
         }, {
-            connected: () => console.log('connected'),
+            connected: () => alert('You are connected!'),
             received: data => handleWS(data)
             
         })
+
         return () => {
-            console.log('disconnect')
            consumer.disconnect()
         }
     }, [])
@@ -86,17 +75,16 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
     useEffect(() =>{
         if(chat){
-            
             formatChat(chat)
         }
      
     }, [chat])
 
     useEffect(() => {
-        
-        if(user && user.subscriptions.some( s=> s.chatroom_id == id)) {
+        // user && user.subscriptions.some( s=> s.chatroom_id == id)
+        if(subscription) {
 
-            setSubscription(user.subscriptions.find(s => s.chatroom_id == id))
+            // setSubscription(user.subscriptions.find(s => s.chatroom_id == id))
             setMessageParams({...messageParams, 'subscription_id':user.subscriptions.find(s => s.chatroom_id == id).id})
         }
     }, [user])
@@ -111,11 +99,10 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             body: JSON.stringify(messageParams)
         }).then(r => {
             if(r.ok){
-                console.log('response recevied!')
-                // r.json().then(console.log)
+                
             }
             else{
-                r.json().then(console.log)
+                r.json().then(error => alert(error.errors))
             }
         })
     }
@@ -132,7 +119,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 formatChat(chat, true)
             }
             else{
-                r.json().then(console.log)
+                r.json().then(error => alert(error.errors))
             }})
     }
 
@@ -150,7 +137,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             })
             }
             else{
-                r.json().then(console.log)
+                r.json().then(error => alert(error.errors))
             }
         })
     }
@@ -170,6 +157,9 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 setMessages(filterMessages)
                 setSubscription(undefined)
             }
+            else{
+                r.json().then(error => alert(error.errors))
+            }
         })
     }
    
@@ -179,7 +169,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     
     <div className="header">
         <h1>{chat.topic}</h1>
-
     </div>
 
     {user && user.owned_chats.map(c => c.id).includes(chat.id) ? <div className="owner">
@@ -190,27 +179,22 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         {user ? <>{subscribers && !subscribers.map((s) => s.id).includes(user.id) ? <button onClick={subscribeToChat}><h1>Subscribe</h1></button> : <button onClick={unsubscribeToChat}><h1>Unsubscribe</h1></button>} </> : <></>}
     </div>}
     
-
-    
-
     <div className="users">
         <h1 className="label">Users</h1>
         <div className="usersContainer">
-        { subscribers ? subscribers.map((u) => <UserCard key={u.id} user ={u} />) : <></>}
+            { subscribers ? subscribers.map((u) => <UserCard key={u.id} user ={u} />) : <></>}
         </div>
-
     </div>
 
 
     <div id='messages' className="messagesContainer">
-        {subscribers ? messages.map(msg => <MessageCard key={msg.id} msg={msg} subscribers={subscribers} chat={chat}/>) : <></>}
+        {subscribers ? messages.map(msg => <MessageCard key={msg.id} msg={msg} subscribers={subscribers}/>) : <></>}
     </div>
 
    { subscription ? <div className="form">
         <form onSubmit={handleSubmit}>
             <input type="text" id='content' value = {messageParams['content']} onChange={handleChange}></input>
             <label htmlFor="submit"><AiOutlineSend /><input type="submit" id='submit'></input></label>
-            
         </form>
 
     </div> : <></>}
