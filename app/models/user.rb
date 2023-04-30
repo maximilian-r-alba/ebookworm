@@ -4,7 +4,7 @@ class User < ApplicationRecord
     validates :headline, allow_blank: true, length: {in: 0..255}
     validates :profile_picture, allow_blank: true, format: {with: %r{.(jpg|png)\Z}i}
     validates :password, confirmation: true
-    validates :password_confirmation, presence: true
+    validates :password_confirmation, presence: true, if: :password_digest_changed?
     after_create :default_profile
     has_secure_password
     has_many :owned_chats, class_name: "Chatroom", dependent: :destroy
