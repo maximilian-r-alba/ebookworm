@@ -3,10 +3,13 @@ import styled from "styled-components"
 import { UserContext } from "./UserContext"
 import { useContext } from "react"
 
-export default function MessageCard({chat ,msg , users}){
+export default function MessageCard({chat ,msg , subscribers}){
 
+    const user = subscribers.find(u => {
+        
+        return u.subscriptions.map(s=>s.id).includes(msg.subscription.id)
+    })
     
-    const user = users.find(u => u.id === msg.subscription.user_id)
     const currentUser = useContext(UserContext)
 
     function checkIsUser(){
