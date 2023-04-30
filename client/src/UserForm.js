@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { useNavigate } from "react-router-dom"
 import {AiOutlineCloseSquare} from "react-icons/ai"
 
 function UserForm({ user , popup , setUser , handleUsers , setFormView}){
@@ -51,7 +50,7 @@ function UserForm({ user , popup , setUser , handleUsers , setFormView}){
             if(r.ok){
                 r.json().then( u => {
                     handleUsers(u)
-                    // open login ?
+                    setFormView(false)
                 })
             }
             else{
