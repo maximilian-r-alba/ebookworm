@@ -5,7 +5,7 @@ bundle install
 # bundle exec rake assets:precompile # These lines are commented out because we have an API only app
 # bundle exec rake assets:clean
 bundle exec rake db:migrate
-bunle exec rake db:seed:replant
+bundle exec rake db:seed:replant
 
 
 rm -rf public
