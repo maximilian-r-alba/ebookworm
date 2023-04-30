@@ -9,6 +9,7 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
         }
     }, [chat])
 
+
     const [chatParams, setChatParams] = useState({topic: ""})
     
     function handleChange(e){
@@ -51,7 +52,7 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
 
 
     return <FormStyled onSubmit={handleSubmit}>
-    <AiOutlineCloseSquare size={'10%'} onClick={() => setFormView(false)}/>
+    {chat ? <AiOutlineCloseSquare size={'10%'} onClick={() => setFormView(false)}/> : <></>}
     <div>
         <input type="text" name="topic" onChange={handleChange} value={chatParams['topic']}/>
         <input type="submit"></input>

@@ -139,6 +139,7 @@ input[type="submit"]{
     align-self: center;
     border: 2px solid;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 svg{
