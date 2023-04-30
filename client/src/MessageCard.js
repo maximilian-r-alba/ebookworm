@@ -34,16 +34,24 @@ export default function MessageCard({chat ,msg , subscribers}){
 
 const MessageDiv = styled.div`
 display: flex;
+${props => props.isUser ? "align-self: flex-end;" : ""}
+${props => props.isUser ? "padding-right: 0;" : ""}
+/* align-self: flex-end; */
+width: fit-content;
+margin-top: 10px;
 
 div.user{
-    width: 5%;
+    width: 25%;
     display: flex;
     flex-direction: column;
-    align-items: end;
-    padding-right: 10px;
+    ${props => !props.isUser ? "align-items: end;" : ""}
     ${props => props.isUser ? "order:2;" : ""}
+    
     p{
-        font-size: calc(5px + .5vw);;
+        padding: 10px;
+        padding-top: 0;
+        margin-top: 0;
+        font-size: calc(8px + .5vw);;
     }
     img{
         width: 45%;
@@ -55,9 +63,11 @@ div.user{
 
 div.message{
     height: 80%;
-    width: 100%;
+    width: 75%;
     margin-left: 1vw;
+    margin-right: 1vw;
     border: solid;
+    border-radius: 30px;
     
     font-size: calc(5px + 1.5vw);
     background-color: white;
