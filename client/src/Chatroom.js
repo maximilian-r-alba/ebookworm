@@ -27,11 +27,21 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
     const messagesContainer = document.getElementById('messages')
     
-    function scrolltoBottom (data){
+    function scrolltoBottom (){
         if(!messagesContainer) return;
         messagesContainer.scrollTop = messagesContainer.scrollHeight
     }
 
+    function sortMessages(a,b){
+        if (a.created_at < b.created_at){
+            return -1
+        }
+        if (a.created_at > b.created_at){
+            return 1
+        }
+    
+        return 0
+    }
     useEffect(() =>{
        
         // setChat(chatrooms.find((c) => c.id == id))
@@ -39,7 +49,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         // setMessages(chatrooms.find((c) => c.id == id).messages)
         fetch(`/chatrooms/${id}`).then(r => r.json()).then(data => {
             setChat(data)
-            setMessages(data.messages)
+            setMessages(data.messages.sort(sortMessages))
         })
         setGuid(Math.random().toString(36).substring(2,15))
 
