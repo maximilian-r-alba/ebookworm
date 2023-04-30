@@ -19,5 +19,6 @@ border: solid;
 max-height: 70vh;
 max-width: 50vw;
 background: white;
+border-radius: 20px;
 
 `
