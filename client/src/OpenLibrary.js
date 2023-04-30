@@ -24,6 +24,7 @@ function OpenLibrary({addBook}){
     }, [page])
 
     function addBooktoLibrary(book){
+    
         const filterResults = searchResults.filter((b) => b.key !== book.key)
         fetch(`https://openlibrary.org${book.key}.json`).then((r) => r.json()).then( (obj)=> {
    
@@ -57,7 +58,8 @@ function OpenLibrary({addBook}){
            
     }
     useEffect(()=>{
-        setSearchCards(searchResults.map((book) => <BookCard key={book.key} handleClick={addBooktoLibrary} book={book}/>))
+       
+        setSearchCards(searchResults.map((book) => <BookCard key={book.key} addBooktoLibrary={addBooktoLibrary} book={book}/>))
     }, [searchResults])
 
 
@@ -123,7 +125,7 @@ const PageDiv = styled.div`
 `
 
 const ResultContainer = styled.div`
-height: 60vh;
+height: 70vh;
 width: 100vw;
 display: flex;
 flex-wrap: wrap;

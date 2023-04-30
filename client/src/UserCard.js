@@ -23,21 +23,24 @@ export default UserCard
 const ContainerDiv = styled.div`
 width: 20vw;
 height: 20vw;
+
 `
 
 const Card = styled.div`
 border: solid;
+border-radius: 20px;
 display: flex;
 flex-direction: column;
 align-items: center;
-
+background-color: white;
 margin: 20px;
 max-height: 100%;
 max-width: 100%;
 img{
     border: solid;
-    height: 50%;
+    border-radius: 20px;
     width: 50%;
+    height: width;
     object-fit: contain;
 }
 h1{
