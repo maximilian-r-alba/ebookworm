@@ -17,7 +17,7 @@ User.second.subscriptions.find_by(chatroom: Chatroom.first).messages.create!(cha
             {
                 "title": "Worm",
                 "author": "WildBow",
-                "img_url": nil,
+                "img_url": "https://audioworm.rein-online.org/wp-content/uploads/2014/06/cropped-Worm-Audiobook1.png",
                 "rating": 0,
                 "description": "Taylor Hebert is a fifteen-year-old parahuman who has developed the power to sense and control insects following a traumatic event at the hands of bullies. She lives in the fictional city of Brockton Bay, a hotspot of parahuman activity, and seeks to become a superhero. On her first night out in costume, she defeats a superpowered gang leader and is subsequently mistaken for a villain by a team of teenage parahuman thieves known as the Undersiders who work jobs for a mysterious benefactor."
             },
