@@ -33,13 +33,13 @@ export default function ReviewCard({ user , users, review , handleFormContainer 
     {reviewer ? <CardDiv>
         {currentUser && currentUser.id == reviewer.id ? <div className="edits"><AiFillEdit size={'20%'} onClick={handleEdits}/> <FaTrashAlt size={'20%'} onClick={handleDelete}/></div> : <></>}
         <div className="reviewer">
-        <h2>{reviewer.name}</h2>
-        <img src={reviewer.profile_picture} alt="profile_picture" />
-        {user ? <h3>{book.title}</h3> : <></>}
+            <h2>{reviewer.name}</h2>
+            <img src={reviewer.profile_picture} alt="profile_picture" />
+            {user ? <h3>{book.title}</h3> : <></>}
         </div>
         <div className="title" >
-        <p><StarsRating givenRating={review.rating}/>{review.rating}</p>
-        <h1>{review.title}</h1>
+            <p><StarsRating givenRating={review.rating}/>{review.rating}</p>
+            <h1>{review.title}</h1>
 
         </div>
       
@@ -68,8 +68,6 @@ grid-template-areas: "reviewer title edits"
 
 div{
     display: inline-block;
-    /* position: absolute; */
-   
 }
 div.reviewer{
 grid-area: reviewer;

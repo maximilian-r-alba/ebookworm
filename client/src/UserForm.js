@@ -50,7 +50,8 @@ function UserForm({ user , popup , setUser , handleUsers , setFormView}){
             if(r.ok){
                 r.json().then( u => {
                     handleUsers(u)
-                    setFormView(false)
+                    setUserParams({name:"", username:"", password:"", password_confirmation:"", headline:"", profile_picture:""})
+                    alert("Success! Please Log in")
                 })
             }
             else{
@@ -109,7 +110,7 @@ const StyledForm = styled.form`
  margin: 2vw;
 display: flex;
 flex-direction: column;
-/* gap: 5px; */
+
 label{
     font-size: calc(6px + .5vw);
     margin-top: 15px;
@@ -157,9 +158,7 @@ font-size: calc(10px + .75vw);
 padding: 20px;
 max-width: 20vw;
 align-self: center;
-/* position: absolute;
-top: 10vh;
-left: 5vw; */
+
 `
 
 const FormContainer = styled.div`
