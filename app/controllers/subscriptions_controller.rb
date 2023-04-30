@@ -2,6 +2,7 @@ class SubscriptionsController < ApplicationController
 
     def create
 
+        
         subscription = @current_user.subscriptions.create!(chatroom_id: params[:chatroom_id])
 
         render json: subscription, status: :created
@@ -9,7 +10,7 @@ class SubscriptionsController < ApplicationController
 
     def destroy
         
-        subscription = Subscription.find(params[:subscription_id])
+        subscription = Subscription.find(params[:id])
         if subscription.user == @current_user
             subscription.destroy
             head :no_content
