@@ -18,7 +18,7 @@ class ReviewsController < ApplicationController
     end
 
     def destroy
-        byebug
+
         review = Review.find(params[:id])
         if review.user == @current_user
           review.destroy
