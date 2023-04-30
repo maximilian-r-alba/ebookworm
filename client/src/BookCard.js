@@ -2,13 +2,25 @@ import styled from "styled-components"
 import { UserContext } from "./UserContext"
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom"
-function BookCard({ book}){
+function BookCard({ addBooktoLibrary ,  book}){
     const user = useContext(UserContext)
     const navigate = useNavigate()
-    return <StyledCard onClick={() => navigate(`/books/${book.id}`)}>
+    
+    function handleClick(){
+       
+        if(addBooktoLibrary){
+            addBooktoLibrary(book)
+        }
+        else{
+            navigate(`/books/${book.id}`)
+        }
+    }
+    return <StyledCard onClick={handleClick}>
         <img src={book.img_url} alt="bookcover"/>
+
         <h1>{book.title}</h1>
         <p>{book.author}</p>
+        
     </StyledCard>
 }
 
@@ -23,7 +35,8 @@ margin: 1%;
 padding-bottom: .5%;
 width: 10%;
 height: 65%;
-
+background-color: white;
+cursor: pointer;
 h1{
     font-size: calc(10px + .5vw);
     max-width: 80%;
