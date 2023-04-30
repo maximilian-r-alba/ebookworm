@@ -127,7 +127,7 @@ h1{
     font-size: calc(20px + 1vw);
 }
 img{
-    width: 60%;
+    width: 10vw;
     height: width;
     border-radius: 50%;
 }
@@ -160,8 +160,7 @@ display: flex;
 flex-wrap: nowrap;
 overflow: hidden;
 overflow-x: scroll;
-height: 50vh;
-/* width: 100%; */
+min-height: 50vh;
 
 *{
     min-width: 10%;
