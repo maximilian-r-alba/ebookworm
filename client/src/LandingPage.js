@@ -27,7 +27,7 @@ export default LandingPage
 const StyledLanding = styled.div`
 
 width: 100vw;
-height: 80vh;
+height: 100vh;
 div.formContainer{
     margin-left: auto;
     margin-right: auto;

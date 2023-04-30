@@ -93,6 +93,9 @@ grid-template-areas:
 column-gap: 2vw;
 row-gap: 1vh;
 
+button{
+    cursor: pointer;
+}
 h2.description{
     grid-area: descriptionLabel;
 }

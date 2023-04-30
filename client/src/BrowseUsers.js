@@ -30,6 +30,9 @@ width: 100vw;
 height: 70vh;
 justify-content: center;
 overflow-y: scroll;
+div{
+    cursor: pointer;
+}
 `
 
 const RouteDiv = styled.div`

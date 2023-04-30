@@ -122,10 +122,12 @@ export default OpenLibrary
 
 const PageDiv = styled.div`
     position: relative;
+    width: 100%;
+    height: 100vh;
 `
 
 const ResultContainer = styled.div`
-height: 70vh;
+height: 60vh;
 width: 100vw;
 display: flex;
 flex-wrap: wrap;
@@ -140,7 +142,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 position: ${props => props.searched ? 'relative' : 'absolute' };
-bottom: ${props => props.searched ? "" : '45%'};
+top: ${props => props.searched ? "" : '25%'};
 min-height: 15vh;
 width: 100vw;
 `
