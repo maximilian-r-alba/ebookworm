@@ -10,7 +10,9 @@ import {AiFillEdit} from 'react-icons/ai'
 import consumer from "./cable"
 import { UserContext } from "./UserContext"
 
-export default function Chatroom({ formatChat , handleFormContainer , chatrooms , user , setUser , users}){
+
+
+export default function Chatroom({ formatChat , handleFormContainer , user , setUser , users}){
     
    
     const [chat, setChat] = useState()
@@ -33,7 +35,7 @@ export default function Chatroom({ formatChat , handleFormContainer , chatrooms 
 
     useEffect(() =>{
        
-        setChat(chatrooms.find((c) => c.id == id))
+        // setChat(chatrooms.find((c) => c.id == id))
         // am i allowed to fetch in this case
         // setMessages(chatrooms.find((c) => c.id == id).messages)
         fetch(`/chatrooms/${id}`).then(r => r.json()).then(data => {
@@ -42,24 +44,34 @@ export default function Chatroom({ formatChat , handleFormContainer , chatrooms 
         })
         setGuid(Math.random().toString(36).substring(2,15))
 
+        
         consumer.subscriptions.create({
             channel: "ChatChannel",
             room: id,
             id: guid,
         }, {
             connected: () => console.log('connected'),
-            received: data => {
-                setChat(chat => { return {...chat, 'messages' : [...messages , data]}})
-                scrolltoBottom()
-                setMessages(messages => [...messages, data])
-            }
+            received: data => handleWS(data)
+            
+            // handleWS(data)
+                
+                // setChat(chat => { return {...chat, 'messages' : [...messages , data]}})
+                // scrolltoBottom()
+                // setMessages(messages => [...messages, data])
+            
         })
-
         return () => {
             console.log('disconnect')
            consumer.disconnect()
         }
     }, [])
+
+    function handleWS(d){
+        console.log(d)
+        setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
+        scrolltoBottom()
+        setMessages(messages => [...messages, d])
+    }
 
     useEffect(() => {
         if(chat){
@@ -95,7 +107,7 @@ export default function Chatroom({ formatChat , handleFormContainer , chatrooms 
         }).then(r => {
             if(r.ok){
                 console.log('response recevied!')
-                r.json().then(console.log)
+                // r.json().then(console.log)
             }
             else{
                 r.json().then(console.log)
@@ -186,7 +198,7 @@ export default function Chatroom({ formatChat , handleFormContainer , chatrooms 
 
 
     <div id='messages' className="messagesContainer">
-        {messages.map(msg => <MessageCard key={msg.id} msg={msg} users={users} chat={chat}/>)}
+        {subscribers ? messages.map(msg => <MessageCard key={msg.id} msg={msg} subscribers={subscribers} chat={chat}/>) : <></>}
     </div>
 
    { subscription ? <div className="form">
@@ -272,6 +284,7 @@ div.messagesContainer{
     gap: 20px;
     border-style: solid none solid solid;
     width: 100%;
+    height: 80vh;
     overflow: hidden;
     overflow-y: scroll;
     
