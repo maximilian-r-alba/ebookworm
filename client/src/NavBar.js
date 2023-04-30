@@ -1,17 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from 'styled-components'
 
-function NavBar({ user , setUser , handleFormContainer}){
+function NavBar({ user , setUser , handleFormContainer , handleLogout}){
     
-    function handleLogout(){
-        fetch("/logout", {
-          method: "DELETE"}).then(() => {
-              setUser(undefined)
-            })
-      }
+   
+   
+
+    //   switching to profile from other user doesnt chagne
     return <NavDiv>
-        <StyledNav>
-            <NavLink to="/">Home</NavLink>
+        <StyledNav id="NavBar">
+           { !user ? <NavLink to="/">Home</NavLink> : <></>}
             
             <NavLink to="/library">Library</NavLink>
             <NavLink to="/readers">Readers</NavLink>
@@ -22,7 +20,7 @@ function NavBar({ user , setUser , handleFormContainer}){
                 <button onClick={handleLogout}>Logout</button>
             </> : <>
             <button onClick={() => handleFormContainer('login')}>Login</button>
-            <NavLink to="/signup">Sign up</NavLink>
+            <button onClick={() => handleFormContainer('signup')}>Sign up</button>
             
             </>}
         </StyledNav>
@@ -32,12 +30,26 @@ function NavBar({ user , setUser , handleFormContainer}){
 
 export default NavBar
 const NavDiv = styled.div`
-    width: 100vw;
+    margin-top: 4vh;
+    width: 90%;
     height: 10vh;
-    font-size: calc(10px + 1vw);
 `
 const StyledNav = styled.nav`
+*{
+    color:black;
+    background: none;
+    border: none;
+
+    margin-left: 25px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: calc(6px + 1vw);
+}
 .active{
-    color: red;
+    border: solid;
+    border-radius: 15px;
+    padding: 10px;
+    font-size: calc(12px + 1vw);
+
 }
 `
