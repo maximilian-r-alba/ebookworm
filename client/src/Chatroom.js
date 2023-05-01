@@ -65,22 +65,22 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
         return () => {
             console.log('disconneected')
-
+            formatChat(chat)
            consumer.disconnect()
           
            
         }
     }, [])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        return () => {
-            if(chat){
-                formatChat(chat)
-            }
+    //     return () => {
+    //         if(chat){
+    //             formatChat(chat)
+    //         }
             
-        }
-    }, [])
+    //     }
+    // }, [])
 
     useEffect(() => {
         if(chat){
