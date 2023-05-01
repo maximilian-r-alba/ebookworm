@@ -19,7 +19,7 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
         setUser(users.find((user) => user.id == id))
     }, [users , id])
   
- 
+ console.log(users , user)
     function handleEdit(){
         handleFormContainer('user')
     }
