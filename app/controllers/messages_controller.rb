@@ -5,7 +5,8 @@ class MessagesController < ApplicationController
         
         message = @current_user.subscriptions.find(params[:subscription_id]).messages.create!(message_params)
      
-        ChatChannel.broadcast_to(message.chatroom, {id: message.id , content: message.content, subscription_id: message.subscription.id, created_at: message.created_at})
+        # ChatChannel.broadcast_to(message.chatroom, {id: message.id , content: message.content, subscription_id: message.subscription.id, created_at: message.created_at})
+        ActionCable.server.broadcast("chat#{message.chatroom.id}", {id: message.id , content: message.content, subscription_id: message.subscription.id, created_at: message.created_at})
         render json: message , status: :created
     end
 

@@ -52,7 +52,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
         consumer.subscriptions.create({
             channel: "ChatChannel",
-            room: id
+            room: parseInt(id)
         }, {
             connected: () => {
                 console.log('You are connected!')},
