@@ -11,7 +11,7 @@ function BookCard({ addBooktoLibrary ,  book}){
             addBooktoLibrary(book)
         }
         else{
-            navigate(`/books/${book.id}`)
+            navigate(`/library/${book.id}`)
         }
     }
     return <StyledCard onClick={handleClick}>

@@ -7,9 +7,9 @@ function NavBar({ user , handleFormContainer , handleLogout}){
         <StyledNav id="NavBar">
            { !user ? <NavLink to="/">Home</NavLink> : <></>}
             
-            <NavLink to="/books">Library</NavLink>
+            <NavLink to="/library">Library</NavLink>
             <NavLink to="/readers">Readers</NavLink>
-            <NavLink to="/chatrooms">Chatrooms</NavLink>
+            <NavLink to="/chats">Chatrooms</NavLink>
             {user ? <>
                 <NavLink to="/librarysearch">Search</NavLink>
                 <NavLink to={`/readers/${user.id}`}>Profile</NavLink>

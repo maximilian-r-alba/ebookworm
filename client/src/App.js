@@ -183,16 +183,16 @@ function formatChat(chat, isDelete){
 
           <Route path='/signup' element={<UserForm handleUsers={handleUsers} />} />
 
-          <Route path='/books' element={<BrowseBooks books={books} />}/>
+          <Route path='/library' element={<BrowseBooks books={books} />}/>
           <Route path='/librarysearch' element={<OpenLibrary addBook={addBook} />} />
-          <Route path='/books/:id' element={<BookPage formatUser={formatUser} user={user} users={users} books={books} handleFormContainer={handleFormContainer}/>} />
+          <Route path='/library/:id' element={<BookPage formatUser={formatUser} user={user} users={users} books={books} handleFormContainer={handleFormContainer}/>} />
 
           
           <Route exact path='/readers' element={<BrowseUsers users={users}/>} />
           <Route path='/readers/:id' element={<UserPage currentUser={user} users={users} formatUser={formatUser} deleteUser={deleteUser} books={books} handleFormContainer={handleFormContainer} />}/>
 
-          <Route path='/chatrooms' element={<BrowseChats user={user} chatrooms={chatrooms} handleFormContainer={handleFormContainer}/>} />
-          <Route path='/chatrooms/:id' element={<Chatroom user={user} setUser={setUser} formatChat={formatChat} chatrooms={chatrooms} users={users} handleFormContainer={handleFormContainer}/>} />
+          <Route path='/chats' element={<BrowseChats user={user} chatrooms={chatrooms} handleFormContainer={handleFormContainer}/>} />
+          <Route path='/chats/:id' element={<Chatroom user={user} setUser={setUser} formatChat={formatChat} chatrooms={chatrooms} users={users} handleFormContainer={handleFormContainer}/>} />
 
         </Routes>
 

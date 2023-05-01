@@ -6,7 +6,7 @@ export default function ChatCard({chat}){
 
     const navigate = useNavigate()
     
-    return<ChatCardDiv onClick={() => navigate(`/chatrooms/${chat.id}`)}>
+    return<ChatCardDiv onClick={() => navigate(`/chats/${chat.id}`)}>
         <h1>{chat.topic}</h1>
         {chat.subscriptions ? <p>{chat.subscriptions.length} <FaBookReader /></p> : <></>}
     </ChatCardDiv>
