@@ -130,6 +130,7 @@ function deleteUser(user){
 
 
 function formatChat(chat, isDelete){
+
   const filterChatrooms = chatrooms.filter(c => c.id !== chat.id)
   
   if(isDelete){

@@ -15,10 +15,15 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     const [chat, setChat] = useState()
     const [messages, setMessages] = useState([])
     const {id} = useParams()
-    const [subscribers, setSubscribers] = useState()
-    const [subscription, setSubscription] = useState() 
+    
+    const [subscriptions, setSubscriptions] = useState() 
+    const [chatUsers, setChatUsers] = useState()
 
-    const [messageParams, setMessageParams] = useState({subscription_id: "", chatroom_id: id, content: ""})
+    const [subId, setSubID] = useState()
+    const [subscribed, setSubscribed] = useState(false)
+
+    
+    const [messageParams, setMessageParams] = useState({subscription_id: "", chatroom_id: parseInt(id), content: ""})
     const messagesContainer = document.getElementById('messages')
     
     function scrolltoBottom (){
@@ -42,64 +47,79 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         fetch(`/chatrooms/${id}`).then(r => r.json()).then(data => {
             setChat(data)
             setMessages(data.messages.sort(sortMessages))
+            setSubscriptions(data.subscriptions)
         })
 
         consumer.subscriptions.create({
             channel: "ChatChannel",
             room: id
         }, {
-            connected: () => alert('You are connected!'),
+            connected: () => {
+                console.log('You are connected!')},
             received: data => handleWS(data)
             
         })
 
         return () => {
+            console.log('disconneected')
+
            consumer.disconnect()
+          
+           
         }
     }, [])
 
+    useEffect(() => {
+
+        return () => {
+            if(chat){
+                formatChat(chat)
+            }
+            
+        }
+    }, [chat])
+
+
+    useEffect(() => {
+        if(user && user.subscriptions.map(s => s.chatroom_id).includes(parseInt(id))){
+            setSubID(user.subscriptions.find(s => s.chatroom_id == parseInt(id)).id)
+            setSubscribed(user.subscriptions.map(s => s.chatroom_id).includes(parseInt(id)))
+            setMessageParams({...messageParams, 'subscription_id': user.subscriptions.find(s => s.chatroom_id == parseInt(id)).id})
+        }
+    }, [])
+
+
+    useEffect(() => {
+        
+        if(subscriptions){
+            const subUserIDs = subscriptions.map(s => s.user_id)
+            const chatters = users.filter(u => subUserIDs.includes(u.id))
+            setChatUsers(chatters)
+        }
+    }, [subscriptions])
+  
+    
     useEffect(() => {
         scrolltoBottom()
     }, [messages])
 
     function handleWS(d){
+    
         setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
         setMessages(messages => [...messages, d])
     }
 
-    useEffect(() => {
-        if(chat){
-            setSubscribers(users.filter( u => chat.subscriptions.map(s => s.user_id).includes(u.id)))
-        }
-    }, [users , chat])
-
-    useEffect(() =>{
-        if(chat){
-            formatChat(chat)
-        }
-     
-    }, [chat])
-
-    useEffect(() => {
-        
-        if(user && user.subscriptions.some( s=> s.chatroom_id == id)) {
-
-            setSubscription(user.subscriptions.find(s => s.chatroom_id == id))
-            setMessageParams({...messageParams, 'subscription_id':user.subscriptions.find(s => s.chatroom_id == id).id})
-        }
-    }, [user])
-    
-  
 
     function handleSubmit(e){
         e.preventDefault()
+        
         fetch('/messages', {
             method: "POST",
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify(messageParams)
         }).then(r => {
             if(r.ok){
-                
+                setMessageParams({...messageParams, 'content': ''})
             }
             else{
                 r.json().then(error => alert(error.errors))
@@ -123,6 +143,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             }})
     }
 
+    
     function subscribeToChat(){
         fetch(`/subscriptions`, {
             method: "POST",
@@ -131,9 +152,14 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         }).then(r => {
             if(r.ok){
                 r.json().then(subscription => {
-                    setUser( user => {return {...user , 'subscriptions': [subscription , ...user['subscriptions']], 'chatrooms': [{id: chat.id, topic: chat.topic}, ...user['chatrooms']]}})
+                
+                    setUser( user => {return {...user , 'subscriptions': [{'id':subscription.id, 'chatroom_id': subscription.chatroom_id} , ...user['subscriptions']], 'chatrooms': [{id: chat.id, topic: chat.topic}, ...user['chatrooms']]}})
                     setChat(chat => {return {...chat, 'subscriptions': [ subscription, ...chat['subscriptions']]}})
-                    setSubscription(subscription)
+                    setSubID(subscription.id)
+                    setMessageParams({...messageParams, 'subscription_id': subscription.id})
+                    setSubscribed(true)
+
+                    setSubscriptions([...subscriptions, subscription])
             })
             }
             else{
@@ -142,20 +168,26 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         })
     }
 
+
     function unsubscribeToChat(){
-        fetch(`/subscriptions/${subscription.id}`, {
+        fetch(`/subscriptions/${subId}`, {
             method: "DELETE"
         }).then(r => {
             if(r.ok){
-                const filterSubscriptions = user.subscriptions.filter(s => s.id !== subscription.id)
-                const filterChatrooms = user.chatrooms.filter( c => c.id !== subscription.chatroom_id)
+                
+                setSubscribed(false)
+
+                const filterSubscriptions = user.subscriptions.filter(s => s.id !== subId)
+                const filterChatrooms = user.chatrooms.filter( c => c.id !== parseInt(id))
                 setUser( user => {return {...user , 'subscriptions': filterSubscriptions, 'chatrooms': filterChatrooms}})
 
-                const filterChatSubs = chat.subscriptions.filter( s => s.id !== subscription.id)
-                const filterMessages = chat.messages.filter( m => m.subscription.id !== subscription.id)
+                const filterChatSubs = chat.subscriptions.filter( s => s.id !== subId)
+                const filterMessages = chat.messages.filter( m => m.subscription.id !== subId)
+                
                 setChat(chat => {return {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages}})
+                setSubscriptions(filterChatSubs)
                 setMessages(filterMessages)
-                setSubscription(undefined)
+                
             }
             else{
                 r.json().then(error => alert(error.errors))
@@ -175,23 +207,24 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     <div>
     <AiFillEdit onClick={() => handleFormContainer('chat', chat)} size={'10%'} /> <FaTrashAlt onClick={handleDelete} size={'8%'} /></div>
 
-    </div> : <div className="options" >
-        {user ? <>{subscribers && !subscribers.map((s) => s.id).includes(user.id) ? <button onClick={subscribeToChat}><h1>Subscribe</h1></button> : <button onClick={unsubscribeToChat}><h1>Unsubscribe</h1></button>} </> : <></>}
+    </div> : 
+    <div className="options" >
+        {user ? <>{ !subscribed ? <button onClick={subscribeToChat}><h1>Subscribe</h1></button> : <button onClick={unsubscribeToChat}><h1>Unsubscribe</h1></button>} </> : <></>}
     </div>}
     
     <div className="users">
         <h1 className="label">Users</h1>
         <div className="usersContainer">
-            { subscribers ? subscribers.map((u) => <UserCard key={u.id} user ={u} />) : <></>}
+            { chatUsers ? chatUsers.map((u) => <UserCard key={u.id} user ={u} />) : <></>}
         </div>
     </div>
 
 
     <div id='messages' className="messagesContainer">
-        {subscribers ? messages.map(msg => <MessageCard key={msg.id} msg={msg} subscribers={subscribers}/>) : <></>}
+        {messages ? messages.map(msg => <MessageCard key={msg.id} msg={msg} users={users}/>) : <></>}
     </div>
 
-   { subscription ? <div className="form">
+   { subscribed ? <div className="form">
         <form onSubmit={handleSubmit}>
             <input type="text" id='content' value = {messageParams['content']} onChange={handleChange}></input>
             <label htmlFor="submit"><AiOutlineSend /><input type="submit" id='submit'></input></label>

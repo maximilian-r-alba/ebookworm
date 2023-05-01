@@ -3,22 +3,23 @@ import styled from "styled-components"
 import { UserContext } from "./UserContext"
 import { useContext } from "react"
 
-export default function MessageCard({msg , subscribers}){
+export default function MessageCard({msg , users}){
 
-    const user = subscribers.find(u => {
+    const user = users.find(u => {
         
-        return u.subscriptions.map(s=>s.id).includes(msg.subscription.id)
+        return u.subscriptions.map(s=>s.id).includes(msg.subscription_id)
     })
     
     const currentUser = useContext(UserContext)
 
     function checkIsUser(){
-        if(currentUser){
+        if(currentUser && user){
             return currentUser.id === user.id
         }
         return false
     }
-    return <MessageDiv isUser={checkIsUser()}>
+    return <>
+    {user ? <MessageDiv isUser={checkIsUser()}>
         <div className="user">
             <img src={user.profile_picture} alt="profile_picture" />
             <p>{user.name}</p>
@@ -29,7 +30,8 @@ export default function MessageCard({msg , subscribers}){
         </div>
         
 
-    </MessageDiv>
+    </MessageDiv> : <></>}
+    </>
 }
 
 const MessageDiv = styled.div`

@@ -19,7 +19,8 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
         setChatParams({[key]: value})
     }
 
-    function handleSubmit(){
+    function handleSubmit(e){
+        e.preventDefault()
         if(chat){
             fetch(`/chatrooms/${chat.id}`, {
                 method: "PATCH",
@@ -27,7 +28,10 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
                 body: JSON.stringify(chatParams)
             }).then(r => {
                 if(r.ok){
-                    r.json().then(chat => formatChat(chat))
+                    r.json().then(chat => {
+                        formatChat(chat)
+                        setFormView(false)
+                    })
                 }
                 else{
                     r.json().then(error => alert(error.errors))
@@ -41,7 +45,10 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
                 body: JSON.stringify(chatParams)
             }).then(r => {
                 if(r.ok){
-                    r.json().then(chat => formatChat(chat))
+                    r.json().then(chat => {
+                        formatChat(chat)
+                        setFormView(false)
+                    })
                 }
                 else{
                     r.json().then(error => alert(error.errors))
