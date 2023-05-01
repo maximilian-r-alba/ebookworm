@@ -46,8 +46,8 @@ export default function ChatroomForm({ user , setUser , formatChat , setFormView
             }).then(r => {
                 if(r.ok){
                     r.json().then(chat => {
-                      
-                       setUser({...user, 'owned_chats':[...user['owned_chats'], chat]})
+                   
+                       setUser({...user, 'owned_chats':[...user['owned_chats'], chat], 'subscriptions': [...user['subscriptions'], {id: chat.subscriptions[0].id , chatroom_id: chat.id}]})
                         formatChat(chat)
                         setFormView(false)
                     })

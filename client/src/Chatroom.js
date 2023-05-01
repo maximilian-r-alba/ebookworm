@@ -47,6 +47,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     useEffect(() =>{
 
         fetch(`/chatrooms/${id}`).then(r => r.json()).then(data => {
+       
             setChat(data)
             setMessages(data.messages.sort(sortMessages))
             setSubscriptions(data.subscriptions)
@@ -144,7 +145,8 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     function handleDelete(){
         fetch(`/chatrooms/${id}`, {method: "DELETE"}).then(r => 
            { if(r.ok){
-            
+                const filterSubscriptions = user.subscriptions.filter(s => s.id !== subId)
+                setUser( user => {return {...user , 'subscriptions': filterSubscriptions}})
                 setChat(undefined)
                 formatChat(chat, true)
             }
