@@ -31,7 +31,7 @@ export default function ReviewCard({ user , users, review , handleFormContainer 
     }
 
     return <>
-    {reviewer ? <CardDiv>
+    {reviewer && book ? <CardDiv>
         {currentUser && currentUser.id == reviewer.id ? <div className="edits"><AiFillEdit size={'20%'} onClick={handleEdits}/> <FaTrashAlt size={'20%'} onClick={handleDelete}/></div> : <></>}
             <div className="reviewer">
                 <h2>{reviewer.name}</h2>
