@@ -1,21 +1,12 @@
 
-import { useState } from "react";
 import styled from "styled-components";
 
-import ChatroomForm from "./ChatroomForm";
 import ChatCard from "./ChatCards";
 
-export default function BrowseChats({ user , formatChat , chatrooms}){
-
-   
-    const [formView, setFormView] = useState(false)
-
-
+export default function BrowseChats({ user , handleFormContainer , chatrooms}){
 
     return<RouteDiv>
-        {user ? <h2 onClick={() => {setFormView(!formView)}}>{formView ? "Submit a Topic" : "Create New Chat?"}</h2> : <></>}
-
-        {formView ? <ChatroomForm setFormView={setFormView} formatChat={formatChat} /> : <></>}
+        {user ? <h2 onClick={() => {handleFormContainer('chat')}}>Create a Chat?</h2> : <></>}
 
         <div className="chatContainer">
             {chatrooms.map((chat) => <ChatCard key={chat.id} chat={chat} />)}

@@ -132,11 +132,13 @@ function deleteUser(user){
 function formatChat(chat, isDelete){
 
   const filterChatrooms = chatrooms.filter(c => c.id !== chat.id)
-  
+
   if(isDelete){
+    
     const filterUsers = users.map(u => {
       return {...u, 'chatrooms': u.chatrooms.filter(c => c.id !== chat.id) , 'owned_chats': u.owned_chats.filter(c => c.id !== chat.id)}
     })
+
 
     setChatrooms(filterChatrooms)
     setUsers(filterUsers)
@@ -164,7 +166,7 @@ function formatChat(chat, isDelete){
         case 'signup':
           return <UserForm handleUsers={handleUsers} popup={true} setFormView={setFormView}/>
         case 'chat':
-          return <ChatroomForm formatChat={formatChat} chat={load} setFormView={setFormView} />
+          return <ChatroomForm user={user} setUser={setUser} formatChat={formatChat} chat={load} setFormView={setFormView} />
     }}
     setForm(form)
     setFormView(true)
@@ -189,7 +191,7 @@ function formatChat(chat, isDelete){
           <Route exact path='/readers' element={<BrowseUsers users={users}/>} />
           <Route path='/readers/:id' element={<UserPage currentUser={user} users={users} formatUser={formatUser} deleteUser={deleteUser} books={books} handleFormContainer={handleFormContainer} />}/>
 
-          <Route path='/chatrooms' element={<BrowseChats formatChat={formatChat} user={user} chatrooms={chatrooms} />} />
+          <Route path='/chatrooms' element={<BrowseChats user={user} chatrooms={chatrooms} handleFormContainer={handleFormContainer}/>} />
           <Route path='/chatrooms/:id' element={<Chatroom user={user} setUser={setUser} formatChat={formatChat} chatrooms={chatrooms} users={users} handleFormContainer={handleFormContainer}/>} />
 
         </Routes>

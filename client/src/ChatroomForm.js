@@ -2,7 +2,7 @@ import { useState , useEffect} from "react"
 import {AiOutlineCloseSquare} from "react-icons/ai"
 import styled from "styled-components"
 
-export default function ChatroomForm({formatChat , setFormView , chat}){
+export default function ChatroomForm({ user , setUser , formatChat , setFormView , chat}){
 
     useEffect(() => {
         if(chat){
@@ -46,6 +46,8 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
             }).then(r => {
                 if(r.ok){
                     r.json().then(chat => {
+                      
+                       setUser({...user, 'owned_chats':[...user['owned_chats'], chat]})
                         formatChat(chat)
                         setFormView(false)
                     })
@@ -60,7 +62,7 @@ export default function ChatroomForm({formatChat , setFormView , chat}){
 
 
     return <FormStyled onSubmit={handleSubmit}>
-    {chat ? <AiOutlineCloseSquare size={'10%'} onClick={() => setFormView(false)}/> : <></>}
+     <AiOutlineCloseSquare size={'10%'} onClick={() => setFormView(false)}/> 
     <div>
         <input type="text" name="topic" onChange={handleChange} value={chatParams['topic']}/>
         <input type="submit"></input>

@@ -9,12 +9,14 @@ import {FaTrashAlt} from 'react-icons/fa'
 import {AiFillEdit} from 'react-icons/ai'
 import consumer from "./cable"
 
-export default function Chatroom({ formatChat , handleFormContainer , user , setUser , users}){
+export default function Chatroom({ formatChat , handleFormContainer , user , setUser , users, chatrooms}){
     
+
    
     const [chat, setChat] = useState()
     const [messages, setMessages] = useState([])
     const {id} = useParams()
+    
     
     const [subscriptions, setSubscriptions] = useState() 
     const [chatUsers, setChatUsers] = useState()
@@ -77,8 +79,14 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             }
             
         }
-    }, [chat])
+    }, [])
 
+    useEffect(() => {
+        if(chat){
+            
+            setChat(chatrooms.find(s => s.id == parseInt(id)))
+        }
+    },[chatrooms])
 
     useEffect(() => {
         if(user && user.subscriptions.map(s => s.chatroom_id).includes(parseInt(id))){
@@ -86,7 +94,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             setSubscribed(user.subscriptions.map(s => s.chatroom_id).includes(parseInt(id)))
             setMessageParams({...messageParams, 'subscription_id': user.subscriptions.find(s => s.chatroom_id == parseInt(id)).id})
         }
-    }, [user])
+    }, [user, chat])
 
 
     useEffect(() => {
@@ -136,6 +144,8 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     function handleDelete(){
         fetch(`/chatrooms/${id}`, {method: "DELETE"}).then(r => 
            { if(r.ok){
+            
+                setChat(undefined)
                 formatChat(chat, true)
             }
             else{
