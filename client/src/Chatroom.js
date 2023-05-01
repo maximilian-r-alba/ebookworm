@@ -65,22 +65,10 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
         return () => {
             console.log('disconneected')
-            formatChat(chat)
            consumer.disconnect()
-          
-           
+
         }
     }, [])
-
-    // useEffect(() => {
-
-    //     return () => {
-    //         if(chat){
-    //             formatChat(chat)
-    //         }
-            
-    //     }
-    // }, [])
 
     useEffect(() => {
         if(chat){
@@ -166,7 +154,11 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 r.json().then(subscription => {
                 
                     setUser( user => {return {...user , 'subscriptions': [{'id':subscription.id, 'chatroom_id': subscription.chatroom_id} , ...user['subscriptions']], 'chatrooms': [{id: chat.id, topic: chat.topic}, ...user['chatrooms']]}})
+
                     setChat(chat => {return {...chat, 'subscriptions': [ subscription, ...chat['subscriptions']]}})
+
+                    formatChat({...chat, 'subscriptions': [ subscription, ...chat['subscriptions']]})
+
                     setSubID(subscription.id)
                     setMessageParams({...messageParams, 'subscription_id': subscription.id})
                     setSubscribed(true)
@@ -199,6 +191,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 const filterMessages = chat.messages.filter( m => m.subscription_id !== subId)
                 
                 setChat(chat => {return {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages}})
+                formatChat( {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages})
                 setSubscriptions(filterChatSubs)
                 setMessages(filterMessages)
                 
