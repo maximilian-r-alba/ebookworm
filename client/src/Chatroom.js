@@ -103,6 +103,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
 
     function handleWS(d){
     
+        console.log('in ws response ', ...messages, chat)
         setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
         console.log('in ws response ', d, messages)
         setMessages(messages => [...messages, d])
@@ -183,6 +184,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         }).then(r => {
             if(r.ok){
                 
+                console.log(chat)
                 setSubscribed(false)
 
                 const filterSubscriptions = user.subscriptions.filter(s => s.id !== subId)
