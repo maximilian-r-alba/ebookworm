@@ -43,6 +43,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     
         return 0
     }
+ 
 
     useEffect(() =>{
 
@@ -89,13 +90,14 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     useEffect(() => {
         
         if(subscriptions){
+            console.log('in use effect ', subscriptions, chatUsers , users)
             const subUserIDs = subscriptions.map(s => s.user_id)
             const chatters = users.filter(u => subUserIDs.includes(u.id))
             setChatUsers(chatters)
         }
-    }, [subscriptions])
+    }, [subscriptions , users])
   
-    
+    console.log(chatUsers)
     useEffect(() => {
         scrolltoBottom()
     }, [messages])
