@@ -136,7 +136,11 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         fetch(`/chatrooms/${id}`, {method: "DELETE"}).then(r => 
            { if(r.ok){
                 const filterSubscriptions = user.subscriptions.filter(s => s.id !== subId)
-                setUser( user => {return {...user , 'subscriptions': filterSubscriptions}})
+                
+                const filterUserChats = user.chatrooms.filter(c => c.id !== chat.id)
+                const filterOwnedChats = user.owned_chats.filter(c => c.id !== chat.id)
+              
+                setUser( user => {return {...user , 'subscriptions': filterSubscriptions, 'chatrooms': filterUserChats, 'owned_chats': filterOwnedChats}})
                 setChat(undefined)
                 formatChat(chat, true)
             }
