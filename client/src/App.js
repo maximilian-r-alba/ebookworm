@@ -142,7 +142,7 @@ function formatChat(chat, isDelete){
 
     setChatrooms(filterChatrooms)
     setUsers(filterUsers)
-    navigate('/books')
+    navigate('/library')
   }
   else{
     setChatrooms([chat , ...filterChatrooms])
