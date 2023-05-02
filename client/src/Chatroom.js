@@ -59,13 +59,13 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             room: parseInt(id)
         }, {
             connected: () => {
-                alert('You have connected to the chat!')},
+                console.log('You have connected to the chat!')},
             received: data => handleWS(data)
             
         })
 
         return () => {
-            alert('You have disconnected from chat')
+            console.log('You have disconnected from chat')
            consumer.disconnect()
 
         }
@@ -144,6 +144,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             }})
     }
 
+    console.log(chat , messages)
     
     function subscribeToChat(){
         fetch(`/subscriptions`, {
@@ -190,7 +191,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 const filterChatSubs = chat.subscriptions.filter( s => s.id !== subId)
        
                 const filterMessages = chat.messages.filter( m => m.subscription_id !== subId)
-                
+                console.log('in delete filters ', filterMessages)
                 setChat(chat => {return {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages}})
                 formatChat( {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages})
                 setSubscriptions(filterChatSubs)
