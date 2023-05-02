@@ -118,7 +118,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             body: JSON.stringify(messageParams)
         }).then(r => {
             if(r.ok){
-                console.log('ok?')
                 setMessageParams({...messageParams, 'content': ''})
             }
             else{
@@ -146,7 +145,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             }})
     }
 
-    console.log('in chatroom component ' , messageParams , messages)
     
     function subscribeToChat(){
         fetch(`/subscriptions`, {
@@ -184,7 +182,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
         }).then(r => {
             if(r.ok){
                 
-                console.log(chat)
+            
                 setSubscribed(false)
 
                 const filterSubscriptions = user.subscriptions.filter(s => s.id !== subId)
@@ -194,7 +192,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
                 const filterChatSubs = chat.subscriptions.filter( s => s.id !== subId)
        
                 const filterMessages = chat.messages.filter( m => m.subscription_id !== subId)
-                console.log('in delete filters ', subId ,  filterMessages, chat , subscriptions)
+
                 setChat(chat => {return {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages}})
                 formatChat( {...chat, 'subscriptions': filterChatSubs, 'messages': filterMessages})
                 setSubscriptions(filterChatSubs)
