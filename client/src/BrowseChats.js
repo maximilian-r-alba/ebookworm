@@ -18,6 +18,7 @@ export default function BrowseChats({ user , handleFormContainer , chatrooms}){
 const RouteDiv = styled.div`
 
 width: 100%;
+padding: 20px;
 h2{
     cursor: pointer;
 }

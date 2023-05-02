@@ -253,7 +253,9 @@ grid-template-areas: "options title owner"
                     " users chat chat"
                     "users form form"
 ;
-width: 99%;
+width: 95%;
+margin-left: auto;
+margin-right: auto;
 height: 80%;
 border: solid;
 
@@ -271,7 +273,7 @@ div.users{
         margin: 0;
     }
     div.usersContainer{
-        height: 90%;
+        height: 70vh;
         display: flex;
         flex-direction: column;
         div{
@@ -316,7 +318,7 @@ div.messagesContainer{
     gap: 20px;
     border-style: solid none solid solid;
     width: 100%;
-    height: 80vh;
+    height: 70vh;
     overflow: hidden;
     overflow-y: scroll;
     
