@@ -30,7 +30,7 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
                 deleteUser(user)
             }
             else{
-                r.json().then(console.log)
+                r.json().then(errorObj => alert(errorObj.errors))
             }
         })
     }

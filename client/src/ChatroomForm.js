@@ -31,7 +31,7 @@ export default function ChatroomForm({ user , setUser , formatChat , setFormView
                     r.json().then(chat => {
                         const chatObj = {id: chat.id, topic: chat.topic}
                         const filterUserchats = user.chatrooms.filter(c => c.id !== chat.id)
-                        console.log(filterUserchats)
+                        
                         const filterOwnedChats = user.owned_chats.filter(c => c.id !== chat.id)
                         setUser({...user, 'chatrooms': [chatObj, ...filterUserchats] , 'owned_chats': [chatObj, ...filterOwnedChats]})
                         formatChat(chat)

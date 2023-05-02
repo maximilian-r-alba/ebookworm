@@ -59,13 +59,13 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             room: parseInt(id)
         }, {
             connected: () => {
-                console.log('You are connected!')},
+                alert('You have connected to the chat!')},
             received: data => handleWS(data)
             
         })
 
         return () => {
-            console.log('disconneected')
+            alert('You have disconnected from chat')
            consumer.disconnect()
 
         }
@@ -90,14 +90,13 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     useEffect(() => {
         
         if(subscriptions){
-            console.log('in use effect ', subscriptions, chatUsers , users)
             const subUserIDs = subscriptions.map(s => s.user_id)
             const chatters = users.filter(u => subUserIDs.includes(u.id))
             setChatUsers(chatters)
         }
     }, [subscriptions , users])
   
-    console.log(chatUsers)
+    
     useEffect(() => {
         scrolltoBottom()
     }, [messages])
