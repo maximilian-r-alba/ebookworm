@@ -1,4 +1,4 @@
-import { useEffect , useState } from "react"
+import { useEffect , useState  } from "react"
 import { useParams } from "react-router-dom"
 
 import MessageCard from "./MessageCard"
@@ -16,7 +16,6 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     const [chat, setChat] = useState()
     const [messages, setMessages] = useState([])
     const {id} = useParams()
-    
     
     const [subscriptions, setSubscriptions] = useState() 
     const [chatUsers, setChatUsers] = useState()
@@ -100,12 +99,12 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
     useEffect(() => {
         scrolltoBottom()
     }, [messages])
-
+ 
+   
     function handleWS(d){
+
+        setChat(chat => { return {...chat, 'messages' : [...chat['messages'] , d]}})
     
-        console.log('in ws response ', ...messages, chat)
-        setChat(chat => { return {...chat, 'messages' : [...messages , d]}})
-        console.log('in ws response ', d, messages)
         setMessages(messages => [...messages, d])
     }
 
@@ -119,6 +118,7 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             body: JSON.stringify(messageParams)
         }).then(r => {
             if(r.ok){
+                console.log('ok?')
                 setMessageParams({...messageParams, 'content': ''})
             }
             else{
