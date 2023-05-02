@@ -11,7 +11,7 @@ function LandingPage({handleUsers}){
     return <StyledLanding>
     {user ? 
     <>
-   {navigate('/books')}
+   {navigate('/library')}
     </>
     
     
