@@ -63,7 +63,7 @@ function UserForm({ user , popup , setUser , handleUsers , setFormView}){
     }
 
     return <FormContainer>
-    {errors ? <ErrorDiv>{errors.map((error) => <p>{error}</p>)}</ErrorDiv> : <></>}
+    {errors ? <ErrorDiv>{errors.map((error) => <p key={error.id}>{error}</p>)}</ErrorDiv> : <></>}
   
     <StyledForm onSubmit={handleSubmit}>
     
