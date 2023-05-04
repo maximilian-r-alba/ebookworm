@@ -183,7 +183,7 @@ function formatChat(chat, isDelete){
 
           <Route path='/signup' element={<UserForm handleUsers={handleUsers} />} />
 
-          <Route path='/library' element={<BrowseBooks books={books} />}/>
+          <Route path='/library' element={<BrowseBooks books={books} user={user}/>}/>
           <Route path='/librarysearch' element={<OpenLibrary addBook={addBook} />} />
           <Route path='/library/:id' element={<BookPage formatUser={formatUser} user={user} users={users} books={books} handleFormContainer={handleFormContainer}/>} />
 

@@ -44,14 +44,18 @@ function OpenLibrary({addBook}){
                 body: JSON.stringify({...book, ['description'] : description})
             }).then( r => {
                 if (r.ok){
-                    r.json().then( bookObj => addBook(bookObj))
+                    r.json().then( bookObj => {
+                        alert(`${bookObj.title} has been added to the library`)
+                        addBook(bookObj)
+                    })
                     setSearchResults(filterResults)
                 }
                 else{
                     r.json().then(errorObj => alert(errorObj.errors))
                 }
             })
-           })
+            
+        })
            
     }
     useEffect(()=>{
@@ -89,7 +93,7 @@ function OpenLibrary({addBook}){
 
     return <PageDiv>
     <HeaderDiv searched={searched}>
-        <h1>Search the OpenLibrary</h1>
+        <h1>Search OpenLibrary for New Books</h1>
         <form onSubmit={handleSubmit}>
             <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}/>
             <input type="submit"/>

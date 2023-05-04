@@ -1,14 +1,16 @@
 import BookCard from "./BookCard"
 import styled from "styled-components"
 import { useState } from "react"
+import { NavLink } from "react-router-dom"
 
-function BrowseBooks ({books}) {
+function BrowseBooks ({books , user}) {
 
     const [filter, setFilter] = useState('title')
     const [filterParams, setFilterParams] = useState('')
 
     return <RouteDiv>
         <div>
+            <h1>Library</h1>
             <form>
                 Search by:
                 <select onChange={(e) => setFilter(e.target.value)}>
@@ -17,11 +19,12 @@ function BrowseBooks ({books}) {
                 </select>
                 <input type="text" value={filterParams} onChange={(e)=> setFilterParams(e.target.value)} />
             </form>
+            {user ? <NavLink to='/librarysearch'>Can't Find What You Want? Search Here</NavLink> : <></>}
+            
         </div>
     <Container>
         {books.filter((book) => book[filter].toUpperCase().includes(filterParams.toUpperCase())).map((book)=> <BookCard key={`${book.id}${book.title}`} book={book} /> )}
     </Container>
-
     </RouteDiv> 
     
 }
@@ -51,6 +54,14 @@ div{
     form select{
         margin-left: 10px;
         margin-right: 10px;
+    }
+    a{
+        color:black;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: calc(8px + 1vw);
     }
 }
 `
