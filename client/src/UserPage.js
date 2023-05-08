@@ -35,6 +35,15 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
         })
     }
 
+    function deleteFromUser (book) {
+        const bookObj = books.find(b => b.id == book.id)
+        const userBooks = user.books.filter(b => b.id !== book.id)
+        const userReviews = user.reviews.filter( r => r.book_id !== book.id)
+        const deletedReview = user.reviews.find(r => r.book_id == book.id)
+        setUser({...user, 'books': userBooks, 'reviews': userReviews})
+        formatUser(deletedReview , bookObj , true)
+    }
+
     return<>
     { user ?  <RouteDiv>
 <UserDiv>
@@ -57,7 +66,7 @@ function UserPage({currentUser , users , books ,  handleFormContainer , formatUs
 
 <h2 className="books">Books</h2>
 <BooksDiv>
-        {user.books ? user.books.map((book) => <BookCard key={book.id} book={book} />) : <></>}
+        {user.books ? user.books.map((book) => <BookCard key={book.id} book={book} userPage={true} user={user} deleteFromUser={deleteFromUser}/>) : <></>}
 
 </BooksDiv>
 
