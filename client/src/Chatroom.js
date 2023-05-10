@@ -58,13 +58,18 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             room: parseInt(id)
         }, {
             connected: () => {
+         
                 console.log('You have connected to the chat!')},
-            received: data => handleWS(data)
+            received: data => handleWS(data),
+            disconnected: () => {
+                consumer.subscriptions.subscriptions[0].unsubscribe()
+            }
             
         })
 
         return () => {
             console.log('You have disconnected from chat')
+            
            consumer.disconnect()
 
         }
@@ -118,6 +123,8 @@ export default function Chatroom({ formatChat , handleFormContainer , user , set
             body: JSON.stringify(messageParams)
         }).then(r => {
             if(r.ok){
+                r.json().then(msg => consumer.subscriptions.subscriptions[0].send(msg))
+
                 setMessageParams({...messageParams, 'content': ''})
             }
             else{
